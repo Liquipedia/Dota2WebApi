@@ -1,0 +1,69 @@
+.dota2webapi-result {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 8px;
+}
+.dota2webapi-result th,
+.dota2webapi-result td {
+	padding: 3px;
+}
+.dota2webapi-result th {
+	text-align: left;
+}
+.dota2webapi-result th {
+	border-bottom: 2px solid black;
+}
+.dota2webapi-result td {
+	border-bottom: 1px solid #ccc;
+	line-height: 18px;
+}
+.dota2webapi-result tr.even td {
+	background-color: #dfdfdf;
+}
+.dota2webapi-result tr.odd td {
+	background-color: #efefef;
+}
+.dota2webapi-result tr.teams td {
+	background-color: #ffe8d8;
+}
+.dota2webapi-result .insert-selection {
+	width: 15px;
+}
+.dota2webapi-result .match-id {
+	width: 100px;
+}
+.dota2webapi-result .radiant-team,
+.dota2webapi-result .dire-team {
+	width: 130px;
+}
+.dota2webapi-result .match-data {
+	display: none;
+}
+.dota2webapi-result .winning-faction {
+	font-weight: bold;
+}
+.dota2webapi-result .status.loading {
+	/* @embed */
+	background-image: url(images/loading.gif);
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+}
+.dota2webapi-result .series-title .team1,
+.dota2webapi-result .series-title .team2 {
+	font-weight: bold;
+}
+.dota2webapi-result .series-title .switch-teams {
+	display: inline-block;
+	/* @embed */
+	background-image: url(images/swap-14.png);
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 14px;
+	margin: 0 10px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.group.group-insert-match-details .tool.tool-button {
+	background-size: contain;
+}

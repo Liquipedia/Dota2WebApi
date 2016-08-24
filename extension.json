@@ -1,0 +1,58 @@
+{
+	"name": "Dota2WebApi",
+	"version": "0.3",
+	"author": [
+		"[http://wiki.teamliquid.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]"
+	],
+	"url": "http://wiki.teamliquid.net/dota2/",
+	"descriptionmsg": "dota2webapi-desc",
+	"license-name": "MIT",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.25.0"
+	},
+	"MessagesDirs": {
+		"Dota2WebApi": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"Dota2WebApiResult": "Dota2WebApiResult.class.php",
+		"Dota2WebApiPlayer": "Dota2WebApiPlayer.class.php",
+		"Dota2WebApiHooks": "Dota2WebApi.hooks.php",
+		"ApiDota2WebApi": "ApiDota2WebApi.php"
+	},
+	"Hooks": {
+		"EditPage::showEditForm:initial": "Dota2WebApiHooks::Dota2WebApiAddButtons",
+		"MakeGlobalVariablesScript": "Dota2WebApiHooks::makeGlobalVariablesScript"
+	},
+	"APIModules": {
+		"dota2webapi": "ApiDota2WebApi"
+	},
+	"ResourceModules": {
+		"ext.dota2WebApi.toolbar": {
+			"styles": [
+				"modules/ext.dota2WebApi.toolbar.css"
+			],
+			"scripts": [
+				"modules/ext.dota2WebApi.toolbar.js"
+			],
+			"messages": [
+				"dota2webapi-detected-matchid-number",
+				"dota2webapi-heroes.json",
+				"dota2webapi-items.json"
+			],
+			"dependencies": [
+				"ext.wikiEditor.toolbar",
+				"jquery.ui.dialog",
+				"mediawiki.util"
+			],
+			"position": "top"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "Dota2WebApi"
+	},
+	"manifest_version": 1
+}
