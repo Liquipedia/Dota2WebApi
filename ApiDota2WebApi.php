@@ -130,10 +130,12 @@ class ApiDota2WebApi extends ApiBase {
 	private function sendRequest() {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->_url);
-		curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
+		curl_setopt($ch, CURLOPT_ENCODING , '');
+		curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (compatible; Dota2WebApi/1.0; liquipedia@teamliquid.net)");
+		curl_setopt($ch, CURLOPT_PROTOCOLS, (CURLPROTO_HTTP|CURLPROTO_HTTPS));
+		curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, (CURLPROTO_HTTP|CURLPROTO_HTTPS));
 
 		$res = curl_exec($ch);
 		curl_close($ch);
