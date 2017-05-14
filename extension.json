@@ -1,10 +1,10 @@
 {
 	"name": "Dota2WebApi",
-	"version": "0.3",
+	"version": "0.4",
 	"author": [
 		"[http://wiki.teamliquid.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]"
 	],
-	"url": "http://wiki.teamliquid.net/dota2/",
+	"url": "https://github.com/Liquipedia/Dota2WebApi/",
 	"descriptionmsg": "dota2webapi-desc",
 	"license-name": "MIT",
 	"type": "other",
