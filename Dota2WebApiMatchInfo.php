@@ -14,6 +14,7 @@ class Dota2WebApiMatchInfo {
 	private $_player_summaries;
 	private $_player_names;
 	private $_result;
+	private $_cacheMaxAge = 86400;
 
 	private $cond_picks_bans = false, $cond_kills_deaths = false, $cond_players = false,
 		$cond_duration = false, $cond_radiant_win = false, $cond_teams = false,
@@ -34,14 +35,16 @@ class Dota2WebApiMatchInfo {
 		}
 		global $wgDota2WebApiKey;
 
-		$this->checkApiKey();
-		$this->sendMatchDetailsRequest();
-		$this->checkMatchDetailsResult();
-		$this->getMatchData();
+		if(!$this->hasCachedAPIResult()) {
+			$this->checkApiKey();
+			$this->sendMatchDetailsRequest();
+			$this->checkMatchDetailsResult();
+			$this->getMatchData();
+			$this->cacheAPIResult();
+		}
 
 		return $this->_result;
 	}
-
 
 	private function parseParams($params){
 		$this->_match_id = $params['matchid'];
@@ -250,5 +253,55 @@ class Dota2WebApiMatchInfo {
 
 	private function getStartTime() {
 		$this->_result->start_time = gmdate('j F Y, H:i \U\T\C', $this->_match_details->result->start_time);
+	}
+
+	private function get_db_object() {
+		global $wgDBtype,
+			$wgDBserver,
+			$wgDBname,
+			$wgDBuser,
+			$wgDBpassword;
+		$db = null;
+		try {
+			$db = new PDO( $wgDBtype . ':host=' . $wgDBserver. ';dbname=' . $wgDBname,
+				$wgDBuser, $wgDBpassword );
+			$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+			$db->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
+			$db->setAttribute( PDO::ATTR_EMULATE_PREPARES, false );
+		} catch( PDOException $e ) {
+			// echo "Connection Error: " . $e->getMessage();
+		}
+		return $db;
+	}
+
+	private function hasCachedAPIResult() {
+		global $wgDBprefix;
+		$db = $this->get_db_object();
+		if( $db == null ) {
+			return;
+		}
+		$pdostatement = $db->prepare( "SELECT * FROM `" . $wgDBprefix . "dota2webapicache` WHERE `matchid` = :matchid" );
+		$pdostatement->execute( [':matchid' => $this->_match_id] );
+		$result = $pdostatement->fetch();
+		if( $result['timestamp'] < time() - $this->_cacheMaxAge ) {
+			return false;
+		} elseif( $result['timestamp'] >= time() - $this->_cacheMaxAge ) {
+			$this->_result = unserialize( $result['apiresult'] );
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private function cacheAPIResult() {
+		global $wgDBprefix;
+		$db = $this->get_db_object();
+		if( $db == null ) {
+			return;
+		}
+		$pdostatement = $db->prepare( "DELETE FROM `" . $wgDBprefix . "dota2webapicache` WHERE `matchid` = :matchid" );
+		$pdostatement->execute( [':matchid' => $this->_match_id] );
+		$pdostatement2 = $db->prepare( "INSERT INTO `" . $wgDBprefix . "dota2webapicache` (`matchid`, `apiresult`, `timestamp`) VALUES (:matchid, :apiresult, :timestamp)" );
+		$pdostatement2->execute( [':matchid' => $this->_match_id, ':apiresult' => serialize( $this->_result ), ':timestamp' => time()] );
 	}
 }
