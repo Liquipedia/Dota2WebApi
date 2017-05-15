@@ -46,7 +46,7 @@ class Dota2WebApiMatchInfo {
 		return $this->_result;
 	}
 
-	private function parseParams($params){
+	private function parseParams($params) {
 		$this->_match_id = $params['matchid'];
 
 		$cond = array_flip($params['data']);
