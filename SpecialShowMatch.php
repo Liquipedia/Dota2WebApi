@@ -82,10 +82,9 @@ class SpecialShowMatch extends SpecialPage
 	}
 
 	private function sandboxParse($wikiText) {
-		global $wgTitle, $wgUser;
 		$myParser = new Parser();
-		$myParserOptions = ParserOptions::newFromUser($wgUser);
-		$result = $myParser->parse($wikiText, $wgTitle, $myParserOptions);
+		$myParserOptions = ParserOptions::newFromUser($this->getUser());
+		$result = $myParser->parse($wikiText, $this->getTitle(), $myParserOptions);
 		return $result->getText();
 	}
 }
