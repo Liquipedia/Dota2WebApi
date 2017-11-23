@@ -235,7 +235,7 @@ class Dota2WebApiMatchInfo {
 
 	private function getDuration() {
 		$duration = $this->_match_details->result->duration;
-		$this->_result->duration = sprintf('%02dm%02ds', $duration / 60, $duration % 60);
+		$this->_result->duration = sprintf('%02d:%02d', $duration / 60, $duration % 60);
 	}
 
 	private function getRadiantWin() {
