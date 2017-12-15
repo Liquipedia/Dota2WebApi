@@ -19,7 +19,7 @@ class Dota2WebApiMatchInfo {
 	private $cond_picks_bans = false, $cond_kills_deaths = false, $cond_players = false,
 		$cond_duration = false, $cond_radiant_win = false, $cond_teams = false,
 		$cond_start_time = false;
-	const match_details_url    = 'https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/';
+	const match_details_url	= 'https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v001/';
 	const player_summaries_url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/';
 
 
