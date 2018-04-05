@@ -58,7 +58,7 @@ class SpecialShowMatch extends SpecialPage
 			$picks_bans_values = $result->picks_bans[$side];
 			foreach ($pick_bans as $stat) {
 				for ($i = 1; $i <= 6; $i++) {
-					if (isset($picks_bans_values[$stat . "_" . $i])) {
+					if (isset ($picks_bans_values[$stat . "_" . $i])) {
 						$template .= "|" . $side . "_" . $stat . "_" . $i . "=" . $picks_bans_values[$stat . "_" . $i] . " ";
 					}
 				}
