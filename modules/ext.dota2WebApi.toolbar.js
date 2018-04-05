@@ -328,7 +328,6 @@ $(document).ready(function() {
 					//radiantPicks = "{{MatchSeries/Picks";
 					radiantPicks = [];
 					for (var j = 1; j <= 5; ++j) {
-						var hero;
 						if ((heroId = result.picks_bans.radiant['pick_' + j]) !== null) {
 							radiantPicks.push(heroes[heroId] !== undefined ? heroes[heroId].toLowerCase() : '');
 						} else {
@@ -340,7 +339,6 @@ $(document).ready(function() {
 					//direPicks = "{{MatchSeries/Picks";
 					direPicks = [];
 					for (var j = 1; j <= 5; ++j) {
-						var hero;
 						if ((heroId = result.picks_bans.dire['pick_' + j]) !== null) {
 							direPicks.push(heroes[heroId] !== undefined ? heroes[heroId].toLowerCase() : '');
 						} else {
@@ -351,8 +349,7 @@ $(document).ready(function() {
 
 					//radiantBans = "{{MatchSeries/Bans";
 					radiantBans = [];
-					for (var j = 1; j <= 5; ++j) {
-						var hero;
+					for (var j = 1; j <= 6; ++j) {
 						if ((heroId = result.picks_bans.radiant['ban_' + j]) !== null) {
 							radiantBans.push(heroes[heroId] !== undefined ? heroes[heroId].toLowerCase() : '');
 						} else {
@@ -363,8 +360,7 @@ $(document).ready(function() {
 
 					//direBans = "{{MatchSeries/Bans";
 					direBans = [];
-					for (var j = 1; j <= 5; ++j) {
-						var hero;
+					for (var j = 1; j <= 6; ++j) {
 						if ((heroId = result.picks_bans.dire['ban_' + j]) !== null) {
 							direBans.push(heroes[heroId] !== undefined ? heroes[heroId].toLowerCase() : '');
 						} else {
@@ -375,8 +371,8 @@ $(document).ready(function() {
 				} else {
 					radiantPicks = ['','','','',''];
 					direPicks    = ['','','','',''];
-					radiantBans  = ['','','','',''];
-					direBans     = ['','','','',''];
+					radiantBans  = ['','','','','',''];
+					direBans     = ['','','','','',''];
 				}
 				
 				//start += '|radiantKills=' + result.kills.radiant + ' ';
