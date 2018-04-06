@@ -1,17 +1,13 @@
 <?php
 
-/**
- * Created by IntelliJ IDEA.
- * User: Marco Ammon (Clubfan)
- * Date: 21.03.2017
- * Time: 16:54
- */
-class SpecialShowMatch extends SpecialPage
-{
-
+class SpecialShowMatch extends SpecialPage {
 	public function __construct() {
 		parent::__construct('ShowMatch');
 		$this->mIncludable = true;
+	}
+
+	function getGroupName() {
+		return 'liquipedia';
 	}
 
 	function execute( $matchId ) {
@@ -27,20 +23,17 @@ class SpecialShowMatch extends SpecialPage
 		try {
 			$_result = $matchInfo->getMatchInfo($params);
 		} catch (Exception $e) {
-
 			$error = true;
 			$_result = array(
 				'error' => $e->getMessage()
 			);
 		}
 		if ($error){
-
 			$output->addWikiText( "An error occured!: " . $_result['error'] );
 		} else {
 			$wikitext = $this->generateWikicode($_result, $matchId);
 			$output->addHTML($this->sandboxParse( $wikitext) );
 		}
-
 	}
 
 	private function generateWikicode($result, $matchId) {
