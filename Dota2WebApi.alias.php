@@ -1,16 +1,16 @@
 <?php
+
 /**
  * Aliases
  *
  * @file
  * @ingroup Extensions
  */
- 
-$specialPageAliases = array();
- 
+$specialPageAliases = [];
+
 /** English
  * @author FO-nTTaX
  */
-$specialPageAliases[ 'en' ] = array(
-	'ShowMatch' => array( 'ShowMatch', 'Showmatch' ),
-);
+$specialPageAliases[ 'en' ] = [
+	'ShowMatch' => [ 'ShowMatch', 'Showmatch' ],
+];

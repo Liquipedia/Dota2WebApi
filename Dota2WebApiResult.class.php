@@ -1,5 +1,7 @@
 <?php
+
 class Dota2WebApiResult {
+
 	public $picks_bans;
 	public $kills;
 	public $deaths;
@@ -10,13 +12,14 @@ class Dota2WebApiResult {
 	public $start_time;
 
 	public function __construct() {
-		$this->picks_bans = array();
-		$this->kills = array();
-		$this->deaths = array();
-		$this->players = array();
+		$this->picks_bans = [];
+		$this->kills = [];
+		$this->deaths = [];
+		$this->players = [];
 		$this->duration = '';
 		$this->radiant_win = false;
-		$this->teams = array();
+		$this->teams = [];
 		$this->start_time = 0;
 	}
+
 }

@@ -5,3 +5,5 @@ INSTALL
 
  wfLoadExtension( 'Dota2WebApi' );
  $wgDota2WebApiKey = /*Your Valve API key*/;
+
+3. Run the update script
