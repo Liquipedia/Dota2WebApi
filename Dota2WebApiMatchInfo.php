@@ -255,53 +255,23 @@ class Dota2WebApiMatchInfo {
 		$this->_result->start_time = gmdate('j F Y, H:i \U\T\C', $this->_match_details->result->start_time);
 	}
 
-	private function get_db_object() {
-		global $wgDBtype,
-			$wgDBserver,
-			$wgDBname,
-			$wgDBuser,
-			$wgDBpassword;
-		$db = null;
-		try {
-			$db = new PDO( $wgDBtype . ':host=' . $wgDBserver. ';dbname=' . $wgDBname,
-				$wgDBuser, $wgDBpassword );
-			$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			$db->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
-			$db->setAttribute( PDO::ATTR_EMULATE_PREPARES, false );
-		} catch( PDOException $e ) {
-			// echo "Connection Error: " . $e->getMessage();
-		}
-		return $db;
-	}
-
 	private function hasCachedAPIResult() {
-		global $wgDBprefix;
-		$db = $this->get_db_object();
-		if( $db == null ) {
-			return;
+		$dbr = wfGetDB( DB_REPLICA );
+		$res = $dbr->select( 'dota2webapicache', '*', ['matchid' => $this->_match_id] );
+		if( $row = $res->fetchObject() ) {
+			if( $row->timestamp < time() - $this->_cacheMaxAge ) {
+				return false;
+			} elseif( $row->timestamp >= time() - $this->_cacheMaxAge ) {
+				$this->_result = unserialize( $row->apiresult );
+				return true;
+			}
 		}
-		$pdostatement = $db->prepare( "SELECT * FROM `" . $wgDBprefix . "dota2webapicache` WHERE `matchid` = :matchid" );
-		$pdostatement->execute( [':matchid' => $this->_match_id] );
-		$result = $pdostatement->fetch();
-		if( $result['timestamp'] < time() - $this->_cacheMaxAge ) {
-			return false;
-		} elseif( $result['timestamp'] >= time() - $this->_cacheMaxAge ) {
-			$this->_result = unserialize( $result['apiresult'] );
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 
 	private function cacheAPIResult() {
-		global $wgDBprefix;
-		$db = $this->get_db_object();
-		if( $db == null ) {
-			return;
-		}
-		$pdostatement = $db->prepare( "DELETE FROM `" . $wgDBprefix . "dota2webapicache` WHERE `matchid` = :matchid" );
-		$pdostatement->execute( [':matchid' => $this->_match_id] );
-		$pdostatement2 = $db->prepare( "INSERT INTO `" . $wgDBprefix . "dota2webapicache` (`matchid`, `apiresult`, `timestamp`) VALUES (:matchid, :apiresult, :timestamp)" );
-		$pdostatement2->execute( [':matchid' => $this->_match_id, ':apiresult' => serialize( $this->_result ), ':timestamp' => time()] );
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->delete( 'dota2webapicache', ['matchid' => $this->_match_id] );
+		$dbw->insert( 'dota2webapicache', [['matchid' => $this->_match_id, 'apiresult' => serialize( $this->_result ), 'timestamp' => time()]] );
 	}
 }

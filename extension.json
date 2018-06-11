@@ -1,8 +1,10 @@
 {
 	"name": "Dota2WebApi",
-	"version": "0.5",
+	"version": "1.1.0",
 	"author": [
-		"[http://wiki.teamliquid.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]"
+		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]", 
+		"[https://fo-nttax.de FO-nTTaX]",
+		"Clubfan"
 	],
 	"url": "https://github.com/Liquipedia/Dota2WebApi/",
 	"descriptionmsg": "dota2webapi-desc",
@@ -28,8 +30,15 @@
 		"Dota2WebApiMatchInfo": "Dota2WebApiMatchInfo.php"
 	},
 	"Hooks": {
-		"EditPage::showEditForm:initial": "Dota2WebApiHooks::Dota2WebApiAddButtons",
-		"MakeGlobalVariablesScript": "Dota2WebApiHooks::makeGlobalVariablesScript"
+		"EditPage::showEditForm:initial": [
+			"Dota2WebApiHooks::onEditPage_showEditForm_initial"
+		],
+		"MakeGlobalVariablesScript": [
+			"Dota2WebApiHooks::onMakeGlobalVariablesScript"
+		],
+		"LoadExtensionSchemaUpdates": [
+			"Dota2WebApiHooks::onLoadExtensionSchemaUpdates"
+		]
 	},
 	"APIModules": {
 		"dota2webapi": "ApiDota2WebApi"
