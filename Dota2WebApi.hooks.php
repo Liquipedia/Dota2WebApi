@@ -3,8 +3,9 @@
 class Dota2WebApiHooks {
 
 	public static function onMakeGlobalVariablesScript( &$vars, OutputPage $out ) {
-		$extensionAssetsPath = $out->getConfig()->get( 'ExtensionAssetsPath' );
-		$extensionPath = (!isset( $wgExtensionAssetsPath ) || $wgExtensionAssetsPath === false) ? $wgScriptPath . '/extensions' : $wgExtensionAssetsPath;
+		$config = $out->getConfig();
+		$extensionAssetsPath = $config->get( 'ExtensionAssetsPath' );
+		$extensionPath = (!isset( $extensionAssetsPath ) || $extensionAssetsPath === false) ? $config->get( 'ScriptPath' ) . '/extensions' : $extensionAssetsPath;
 		$wgDota2WebApiImagePath = $extensionPath . '/Dota2WebApi/modules/images/';
 		$vars[ 'wgDota2WebApiImagePath' ] = $wgDota2WebApiImagePath;
 		return true;
