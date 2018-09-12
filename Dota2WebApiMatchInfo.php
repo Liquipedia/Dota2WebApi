@@ -12,7 +12,7 @@ class Dota2WebApiMatchInfo {
 	private $_player_summaries;
 	private $_player_names;
 	private $_result;
-	private $_cacheMaxAge = 86400;
+	private $_cacheMaxAge = 3600;
 	private $cond_picks_bans = false, $cond_kills_deaths = false, $cond_players = false,
 		$cond_duration = false, $cond_radiant_win = false, $cond_teams = false,
 		$cond_start_time = false;
