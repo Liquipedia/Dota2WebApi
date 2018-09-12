@@ -5,7 +5,7 @@ $( document ).ready( function() {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
 				mw.loader.using( 'ext.wikiEditor.toolbar', function() {
 					$( document ).ready( function() {
-						addToToolbarInsertFullMatchDetails()
+						addToToolbarInsertFullMatchDetails();
 						addToToolbarInsertBracketMatchDetails();
 					} );
 				} );
