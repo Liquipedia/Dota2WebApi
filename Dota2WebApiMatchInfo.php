@@ -78,7 +78,7 @@ class Dota2WebApiMatchInfo {
 	private function checkMatchDetailsResult() {
 		if ( $this->_match_details == null ) {
 			throw new Dota2WebApiException( wfMessage( 'dota2webapi-error-no-valve-api-data' )->text() );
-		} else if ( isset( $this->_match_details->result->error ) ) {
+		} elseif ( isset( $this->_match_details->result->error ) ) {
 			throw new Dota2WebApiException( wfMessage( 'dota2webapi-error-message-from-valve-api' )->text()
 			. "\n" . $this->_match_details->result->error );
 		}
@@ -269,7 +269,9 @@ class Dota2WebApiMatchInfo {
 	private function cacheAPIResult() {
 		$dbw = wfGetDB( DB_MASTER );
 		$dbw->delete( 'dota2webapicache', [ 'matchid' => $this->_match_id ] );
-		$dbw->insert( 'dota2webapicache', [ [ 'matchid' => $this->_match_id, 'apiresult' => serialize( $this->_result ), 'timestamp' => time() ] ] );
+		if ( isset( $this->_match_details->result->error ) ) {
+			$dbw->insert( 'dota2webapicache', [ [ 'matchid' => $this->_match_id, 'apiresult' => serialize( $this->_result ), 'timestamp' => time() ] ] );
+		}
 	}
 
 }
