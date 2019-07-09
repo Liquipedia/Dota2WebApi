@@ -681,10 +681,12 @@ $( document ).ready( function() {
 		} )
 			.done( function( data ) {
 				var radiantPicks, direPicks,
+					radiantBans, direBans,
 					end = '';
 
 				if ( data.dota2webapi.isresult ) {
 					var result = data.dota2webapi.result;
+					console.log( result );
 
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						radiantPicks = '';
@@ -697,6 +699,16 @@ $( document ).ready( function() {
 						}
 						radiantPicks += "\n";
 
+						radiantBans = '';
+						for ( var j = 1; j <= 6; ++j ) {
+							radiantBans += '|t{r}b' + j + '=';
+							if ( ( heroId = result.picks_bans.radiant['ban_' + j] ) !== null ) {
+								if ( heroes[heroId] !== undefined )
+									radiantBans += heroes[heroId].toLowerCase();
+							}
+						}
+						radiantBans += "\n";
+
 						direPicks = '';
 						for ( var j = 1; j <= 5; ++j ) {
 							direPicks += '|t{d}h' + j + '=';
@@ -706,9 +718,21 @@ $( document ).ready( function() {
 							}
 						}
 						direPicks += "\n";
+
+						direBans = '';
+						for ( var j = 1; j <= 6; ++j ) {
+							direBans += '|t{d}b' + j + '=';
+							if ( ( heroId = result.picks_bans.dire['ban_' + j] ) !== null ) {
+								if ( heroes[heroId] !== undefined )
+									direBans += heroes[heroId].toLowerCase();
+							}
+						}
+						direBans += "\n";
 					} else {
 						radiantPicks = '|t{r}h1= |t{r}h2= |t{r}h3= |t{r}h4= |t{r}h5=\n';
 						direPicks = '|t{d}h1= |t{d}h2= |t{d}h3= |t{d}h4= |t{d}h5=\n';
+						radiantBans = '|t{r}b1= |t{r}b2= |t{r}b3= |t{r}b4= |t{r}b5= |t{r}b6=\n';
+						direBans = '|t{d}b1= |t{d}b2= |t{d}b3= |t{d}b4= |t{d}b5= |t{d}b6=\n';
 					}
 
 					end += '|length=' + result.duration + ' ';
@@ -732,6 +756,8 @@ $( document ).ready( function() {
 					}
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
+					$matchData.data( 'radiantBans', radiantBans );
+					$matchData.data( 'direBans', direBans );
 					$matchData.data( 'startTime', result.start_time );
 					$matchData.data( 'wikitextEnd', end );
 					$status.text( 'Success' );
@@ -811,30 +837,40 @@ $( document ).ready( function() {
 			matchID = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
 			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-team' ).text(),
 			winningTeam,
-			team1Side, team2Side;
-		text = '';
+			team1Side, team2Side,
+			team1Picks, team2Picks,
+			team1Bans, team2Bans;
+		var text = '';
 		winningTeam = winningTeamName === params.team1 ? 1 : 2;
 
-		radiantPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
-		direPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
+		var radiantPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
+		var direPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
+		var radiantBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
+		var direBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
 
 		if ( $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-team' ).text() === params.team1 ) {
 			team1Side = 'radiant';
 			team2Side = 'dire';
 			team1Picks = radiantPicks.replace( /\{r\}/g, 1 );
 			team2Picks = direPicks.replace( /\{d\}/g, 2 );
+			team1Bans = radiantBans.replace( /\{r\}/g, 1 );
+			team2Bans = direBans.replace( /\{d\}/g, 2 );
 		} else {
 			team1Side = 'dire';
 			team2Side = 'radiant';
 			team1Picks = direPicks.replace( /\{d\}/g, 1 );
 			team2Picks = radiantPicks.replace( /\{r\}/g, 2 );
+			team1Bans = direBans.replace( /\{d\}/g, 2 );
+			team2Bans = radiantBans.replace( /\{r\}/g, 1 );
 		}
 
 		text += '|match' + params.matchIndex + '={{Match\n';
 		text += '|team1side=' + team1Side + '\n';
 		text += team1Picks;
+		text += team1Bans;
 		text += '|team2side=' + team2Side + '\n';
 		text += team2Picks;
+		text += team2Bans;
 		text += $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'wikitextEnd' ).replace( '{w}', winningTeam );
 
 		return { winningTeam: winningTeam, matchID: matchID, 'text': text };
