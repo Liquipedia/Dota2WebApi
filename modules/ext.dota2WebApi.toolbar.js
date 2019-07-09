@@ -22,8 +22,7 @@ $( document ).ready( function() {
 
 	function getHeroesData() {
 		var data = JSON.parse( mw.message( 'dota2webapi-heroes.json' ).plain() )['heroes'],
-			hero, heroes = { };
-		//console.log('heroes', data);
+			heroes = { };
 		for ( var i = 0; i < data.length; ++i ) {
 			heroes[data[i].id] = data[i].localized_name.replace( '\'', '' );
 		}
@@ -33,7 +32,6 @@ $( document ).ready( function() {
 	function getItemsData() {
 		var data = JSON.parse( mw.message( 'dota2webapi-items.json' ).plain() )['items'],
 			item_name, items = { };
-		//console.log('items', data);
 		for ( var i = 0; i < data.length; ++i ) {
 			item_name = data[i].name.replace( '_', ' ' );
 			if ( item_name.indexOf( 'recipe' ) == '0' ) {
@@ -662,8 +660,7 @@ $( document ).ready( function() {
 			$radiantTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
 			$direTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
-			heroes = getHeroesData(),
-			items = getItemsData();
+			heroes = getHeroesData();
 		$matchData.data( 'matchid', vars.matchIDs[i] );
 
 		$status.text( 'In progress...' )
@@ -686,7 +683,6 @@ $( document ).ready( function() {
 
 				if ( data.dota2webapi.isresult ) {
 					var result = data.dota2webapi.result;
-					console.log( result );
 
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						radiantPicks = '';
