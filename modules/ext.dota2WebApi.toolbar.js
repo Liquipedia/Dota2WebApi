@@ -860,7 +860,7 @@ $( document ).ready( function() {
 			team2Bans = radiantBans.replace( /\{r\}/g, 1 );
 		}
 
-		text += matchID + '\n';
+		text += '|matchid1=' + matchID + '\n';
 		text += '|match' + params.matchIndex + '={{Match\n';
 		text += '|team1side=' + team1Side + '\n';
 		text += team1Picks;
