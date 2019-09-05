@@ -570,6 +570,7 @@ $( document ).ready( function() {
 	var insertBracketMatchDetails = function( context ) {
 		var selection,
 			matchIDs,
+		    	matchIDsPars,
 			vars;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
@@ -579,8 +580,17 @@ $( document ).ready( function() {
 		}
 
 		matchIDs = selection.split( /\r\n|\n| / );
+        
+        	for ( var i = 0; i < matchIDs.length; i++ ) {
+            		var matches = matchIDs[i].match( /\d{8,}/g );
+            		if ( matches !== null ) {
+				for ( var j = 0; j < matchIDs.length; j++ ) {
+                			matchIDsPars[i] = matches[0];
+				}
+            		}
+        	}
 
-		addInsertDialog( matchIDs, {
+		addInsertDialog( matchIDsPars, {
 			title: 'Insert bracket match details',
 			id: 'insert-bracket-match-details-dialog',
 			insertCallback: function( event, ui ) {
@@ -646,7 +656,7 @@ $( document ).ready( function() {
 		} );
 
 		vars = {
-			matchIDs: matchIDs,
+			matchIDs: matchIDsPars,
 			ok: false,
 			teams: [ ]
 		};
