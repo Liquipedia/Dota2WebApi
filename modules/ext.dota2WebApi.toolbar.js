@@ -856,8 +856,8 @@ $( document ).ready( function() {
 			team2Side = 'radiant';
 			team1Picks = direPicks.replace( /\{d\}/g, 1 );
 			team2Picks = radiantPicks.replace( /\{r\}/g, 2 );
-			team1Bans = direBans.replace( /\{d\}/g, 2 );
-			team2Bans = radiantBans.replace( /\{r\}/g, 1 );
+			team1Bans = direBans.replace( /\{d\}/g, 1 );
+			team2Bans = radiantBans.replace( /\{r\}/g, 2 );
 		}
 
 		text += '|matchid' + params.matchIndex + '=' + matchID + '\n';
