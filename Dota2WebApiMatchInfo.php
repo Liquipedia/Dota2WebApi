@@ -249,7 +249,7 @@ class Dota2WebApiMatchInfo {
 	}
 
 	private function getStartTime() {
-		$this->_result->start_time = gmdate( 'j F Y, H:i \U\T\C', $this->_match_details->result->start_time );
+		$this->_result->start_time = gmdate( 'F j, Y - H:i \{\{\A\b\b\r\/\U\T\C\}\}', $this->_match_details->result->start_time );
 	}
 
 	private function hasCachedAPIResult() {
