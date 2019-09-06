@@ -198,9 +198,7 @@ $( document ).ready( function() {
 		for ( var i = 0; i < matchIDs.length; i++ ) {
 			var matches = matchIDs[i].match( /\d{8,}/g );
 			if ( matches !== null ) {
-				for ( var j = 0; j < matchIDs.length; j++ ) {
-					matchIDsPars.push( matches[0] );
-				}
+				matchIDsPars.push( matches[0] );
 			}
 		}
 
@@ -594,9 +592,7 @@ $( document ).ready( function() {
 		for ( var i = 0; i < matchIDs.length; i++ ) {
 			var matches = matchIDs[i].match( /\d{8,}/g );
 			if ( matches !== null ) {
-				for ( var j = 0; j < matchIDs.length; j++ ) {
-					matchIDsPars.push( matches[0] );
-				}
+				matchIDsPars.push( matches[0] );
 			}
 		}
 
