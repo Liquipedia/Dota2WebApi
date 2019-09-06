@@ -620,6 +620,7 @@ $( document ).ready( function() {
 
 						sStart = '{{BracketMatchSummary\n';
 						sStart += '|date=' + date + '\n';
+						sStart += '|finished=' + '\n';
 
 						for ( var i = 0; i < matches.length; ++i ) {
 							var processedGame = processGameForBracketDetails( {
@@ -632,7 +633,7 @@ $( document ).ready( function() {
 							replaceText += processedGame.matchID + "\n";
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
-							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
+							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i + 1] + '\n';
 							sEnd += '\n' + processedGame.text;
 						}
 
