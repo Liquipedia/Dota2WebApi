@@ -184,7 +184,7 @@ $( document ).ready( function() {
 	var insertFullMatchDetails = function( context ) {
 		var selection,
 			matchIDs,
-		    	matchIDsPars = [],
+			matchIDsPars = [ ],
 			vars;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
@@ -194,15 +194,15 @@ $( document ).ready( function() {
 		}
 
 		matchIDs = selection.split( /\r\n|\n| / );
-		
-        	for ( var i = 0; i < matchIDs.length; i++ ) {
-            		var matches = matchIDs[i].match( /\d{8,}/g );
-            		if ( matches !== null ) {
+
+		for ( var i = 0; i < matchIDs.length; i++ ) {
+			var matches = matchIDs[i].match( /\d{8,}/g );
+			if ( matches !== null ) {
 				for ( var j = 0; j < matchIDs.length; j++ ) {
-                			matchIDsPars[i] = matches[0];
+					matchIDsPars.push( matches[0] );
 				}
-            		}
-        	}
+			}
+		}
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert full match details',
@@ -580,7 +580,7 @@ $( document ).ready( function() {
 	var insertBracketMatchDetails = function( context ) {
 		var selection,
 			matchIDs,
-		    	matchIDsPars = [],
+			matchIDsPars = [ ],
 			vars;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
@@ -590,15 +590,15 @@ $( document ).ready( function() {
 		}
 
 		matchIDs = selection.split( /\r\n|\n| / );
-        
-        	for ( var i = 0; i < matchIDs.length; i++ ) {
-            		var matches = matchIDs[i].match( /\d{8,}/g );
-            		if ( matches !== null ) {
+
+		for ( var i = 0; i < matchIDs.length; i++ ) {
+			var matches = matchIDs[i].match( /\d{8,}/g );
+			if ( matches !== null ) {
 				for ( var j = 0; j < matchIDs.length; j++ ) {
-                			matchIDsPars[] = matches[0];
+					matchIDsPars.push( matches[0] );
 				}
-            		}
-        	}
+			}
+		}
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert bracket match details',
