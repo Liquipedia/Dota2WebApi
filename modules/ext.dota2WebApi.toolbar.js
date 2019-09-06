@@ -632,6 +632,7 @@ $( document ).ready( function() {
 							replaceText += processedGame.matchID + "\n";
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
+							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
 							sEnd += '\n' + processedGame.text;
 						}
 
@@ -880,7 +881,6 @@ $( document ).ready( function() {
 			team2Bans = radiantBans.replace( /\{r\}/g, 2 );
 		}
 
-		text += '|matchid' + params.matchIndex + '=' + matchID + '\n';
 		text += '|match' + params.matchIndex + '={{Match\n';
 		text += '|team1side=' + team1Side + '\n';
 		text += team1Picks;
