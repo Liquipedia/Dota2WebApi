@@ -633,7 +633,7 @@ $( document ).ready( function() {
 							replaceText += processedGame.matchID + "\n";
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
-							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i + 1] + '\n';
+							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
 							sEnd += '\n' + processedGame.text;
 						}
 
