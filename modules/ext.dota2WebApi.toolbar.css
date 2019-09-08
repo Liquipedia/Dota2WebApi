@@ -32,9 +32,11 @@
 .dota2webapi-result .match-id {
 	width: 100px;
 }
-.dota2webapi-result .radiant-team,
+.dota2webapi-result .radiant-team {
+	background-color: #bcd985;
+}
 .dota2webapi-result .dire-team {
-	width: 130px;
+	background-color: #e79e7e;
 }
 .dota2webapi-result .match-data {
 	display: none;
