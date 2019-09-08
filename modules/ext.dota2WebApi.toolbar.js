@@ -110,6 +110,7 @@ $( document ).ready( function() {
 	function addInsertDialog( matchIDs, configuration ) {
 		$.extend( configuration, {
 			width: '700px',
+			maxWidth: '100%',
 			modal: true,
 			buttons: [
 				{
@@ -150,8 +151,8 @@ $( document ).ready( function() {
 			<th class="insert-selection"></th>\
 			<th class="match-id">Match ID</th>\
 			<th class="status">Status</th>\
-			<th class="radiant-team">Radiant team</th>\
-			<th class="dire-team">Dire team</th>\
+			<th class="left-team">Team 1</th>\
+			<th class="right-team">Team 2</th>\
 			<th class="match-data">Match data</th>\
 		</tr>';
 		for ( var i = 0; i < matchIDs.length; i++ ) {
@@ -162,8 +163,8 @@ $( document ).ready( function() {
 						)
 					+ h.element( 'td', { class: 'match-id' }, '' + matchIDs[i] )
 					+ h.element( 'td', { class: 'status' }, 'Waiting...' )
-					+ h.element( 'td', { class: 'radiant-team' }, '-' )
-					+ h.element( 'td', { class: 'dire-team' }, '-' )
+					+ h.element( 'td', { class: 'left-team' }, '-' )
+					+ h.element( 'td', { class: 'right-team' }, '-' )
 					+ h.element( 'td', { class: 'match-data' }, '' )
 					)
 				);
@@ -249,8 +250,8 @@ $( document ).ready( function() {
 
 						s = sStart + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
-						team1 = $checked.parent().siblings( '.radiant-team' ).text();
-						team2 = $checked.parent().siblings( '.dire-team' ).text();
+						team1 = $checked.parent().siblings( '.left-team' ).text();
+						team2 = $checked.parent().siblings( '.right-team' ).text();
 						var processedGame = processGameForFullDetails( {
 							team1: team1,
 							team2: team2,
@@ -287,8 +288,8 @@ $( document ).ready( function() {
 	function processMatchForFullDetails( vars, i ) {
 		// jQuery variables
 		var $status = $( '#insert-full-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
-			$radiantTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
-			$direTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
+			$leftTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.left-team:eq(' + i + ')' ),
+			$rightTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.right-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-full-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
 			heroes = getHeroesData(),
 			items = getItemsData();
@@ -422,13 +423,15 @@ $( document ).ready( function() {
 						dire: result.teams['dire']
 					} );
 
-					$radiantTeam.text( result.teams['radiant'] );
-					$direTeam.text( result.teams['dire'] );
+					$leftTeam.text( result.teams['radiant'] );
+					$rightTeam.text( result.teams['dire'] );
+					$leftTeam.addClass( 'radiant-team' );
+					$rightTeam.addClass( 'dire-team' );
 					if ( result.radiant_win ) {
-						$radiantTeam.addClass( 'winning-faction' );
+						$leftTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
 					} else {
-						$direTeam.addClass( 'winning-faction' );
+						$rightTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'dire' );
 					}
 					$matchData.data( 'radiantScore', result.deaths.dire );
@@ -532,7 +535,7 @@ $( document ).ready( function() {
 			text = '';
 		winningTeam = winningTeamName === params.team1 ? 1 : 2;
 
-		radiantSide = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-team' ).text() === params.team1 ?
+		radiantSide = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .left-team' ).text() === params.team1 ?
 			'left' : 'right';
 
 		radiantScore = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantScore' );
@@ -601,7 +604,7 @@ $( document ).ready( function() {
 			id: 'insert-bracket-match-details-dialog',
 			insertCallback: function( event, ui ) {
 				var wikitext, team1, team2,
-					s, sStart = '', sEnd = '', replaceText = '';
+					s, sStart = '', sMatchID = '', sEnd = '', replaceText = '';
 				$checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.size() ) {
 					$checked = $checked.first();
@@ -629,16 +632,16 @@ $( document ).ready( function() {
 							replaceText += processedGame.matchID + "\n";
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
-							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
-							sEnd += '\n' + processedGame.text;
+							sMatchID += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
+							sEnd += processedGame.text;
 						}
 
 						sEnd += '}}';
 
-						s = sStart + sEnd;
+						s = sStart + sMatchID + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
-						team1 = $checked.parent().siblings( '.radiant-team' ).text();
-						team2 = $checked.parent().siblings( '.dire-team' ).text();
+						team1 = $checked.parent().siblings( '.left-team' ).text();
+						team2 = $checked.parent().siblings( '.right-team' ).text();
 						var processedGame = processGameForBracketDetails( {
 							team1: team1,
 							team2: team2,
@@ -675,8 +678,8 @@ $( document ).ready( function() {
 	function processMatchForBracketDetails( vars, i ) {
 		// jQuery variables
 		var $status = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
-			$radiantTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
-			$direTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
+			$leftTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.left-team:eq(' + i + ')' ),
+			$rightTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.right-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
 			heroes = getHeroesData();
 		$matchData.data( 'matchid', vars.matchIDs[i] );
@@ -759,13 +762,15 @@ $( document ).ready( function() {
 						dire: result.teams['dire']
 					} );
 
-					$radiantTeam.text( result.teams['radiant'] );
-					$direTeam.text( result.teams['dire'] );
+					$leftTeam.text( result.teams['radiant'] );
+					$rightTeam.text( result.teams['dire'] );
+					$leftTeam.addClass( 'radiant-team' );
+					$rightTeam.addClass( 'dire-team' );
 					if ( result.radiant_win !== undefined ) {
-						$radiantTeam.addClass( 'winning-faction' );
+						$leftTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
 					} else {
-						$direTeam.addClass( 'winning-faction' );
+						$rightTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'dire' );
 					}
 					$matchData.data( 'radiantPicks', radiantPicks );
@@ -862,7 +867,7 @@ $( document ).ready( function() {
 		var radiantBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
 		var direBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
 
-		if ( $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-team' ).text() === params.team1 ) {
+		if ( $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .left-team' ).text() === params.team1 ) {
 			team1Side = 'radiant';
 			team2Side = 'dire';
 			team1Picks = radiantPicks.replace( /\{r\}/g, 1 );
