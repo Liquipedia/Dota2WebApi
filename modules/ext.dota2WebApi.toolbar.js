@@ -495,7 +495,7 @@ $( document ).ready( function() {
 								+ h.element( 'td', { colspan: 2 }, 'Entire series' )
 								+ h.element( 'td', { colspan: 2, class: 'series-title' },
 									new h.Raw(
-										+ h.element( 'span', { class: 'team1' }, team1 )
+										h.element( 'span', { class: 'team1' }, team1 )
 										+ h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } )
 										+ h.element( 'span', { class: 'team2' }, team2 )
 										)
@@ -824,12 +824,11 @@ $( document ).ready( function() {
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
 								)
-								+ h.element( 'td', { colspan: 4, class: 'series-title' },
+								+ h.element( 'td', { colspan: 2 }, 'Entire series' )
+								+ h.element( 'td', { colspan: 2, class: 'series-title' },
 									new h.Raw(
-										'Entire series - Team 1: '
-										+ h.element( 'span', { class: 'team1' }, team1 )
+										h.element( 'span', { class: 'team1' }, team1 )
 										+ h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } )
-										+ 'Team 2: '
 										+ h.element( 'span', { class: 'team2' }, team2 )
 										)
 									)
