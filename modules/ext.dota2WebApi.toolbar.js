@@ -493,7 +493,6 @@ $( document ).ready( function() {
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
 								)
 								+ h.element( 'td', { colspan: 2 }, 'Entire series' )
-									)
 								+ h.element( 'td', { colspan: 2, class: 'series-title' },
 									new h.Raw(
 										+ h.element( 'span', { class: 'team1' }, team1 )
