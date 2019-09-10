@@ -763,8 +763,8 @@ $( document ).ready( function() {
 
 					$radiantTeam.text( result.teams['radiant'] );
 					$direTeam.text( result.teams['dire'] );
-					$radiantTeam.addClass( 'radiant-team' );
-					$direTeam.addClass( 'dire-team' );
+					$radiantTeam.addClass( 'radiant-side' );
+					$direTeam.addClass( 'dire-side' );
 					if ( result.radiant_win !== undefined ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
