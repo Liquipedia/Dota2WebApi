@@ -110,6 +110,7 @@ $( document ).ready( function() {
 	function addInsertDialog( matchIDs, configuration ) {
 		$.extend( configuration, {
 			width: '700px',
+			maxWidth: '100%',
 			modal: true,
 			buttons: [
 				{
@@ -150,8 +151,8 @@ $( document ).ready( function() {
 			<th class="insert-selection"></th>\
 			<th class="match-id">Match ID</th>\
 			<th class="status">Status</th>\
-			<th class="radiant-team">Radiant team</th>\
-			<th class="dire-team">Dire team</th>\
+			<th class="radiant-team">Team 1</th>\
+			<th class="dire-team">Team 2</th>\
 			<th class="match-data">Match data</th>\
 		</tr>';
 		for ( var i = 0; i < matchIDs.length; i++ ) {
@@ -424,6 +425,8 @@ $( document ).ready( function() {
 
 					$radiantTeam.text( result.teams['radiant'] );
 					$direTeam.text( result.teams['dire'] );
+					$radiantTeam.addClass( 'radiant-side' );
+					$direTeam.addClass( 'dire-side' );
 					if ( result.radiant_win ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
@@ -489,12 +492,11 @@ $( document ).ready( function() {
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
 								)
-								+ h.element( 'td', { colspan: 4, class: 'series-title' },
+								+ h.element( 'td', { colspan: 2 }, 'Entire series' )
+								+ h.element( 'td', { colspan: 2, class: 'series-title' },
 									new h.Raw(
-										'Entire series - Team 1: '
-										+ h.element( 'span', { class: 'team1' }, team1 )
+										h.element( 'span', { class: 'team1' }, team1 )
 										+ h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } )
-										+ 'Team 2: '
 										+ h.element( 'span', { class: 'team2' }, team2 )
 										)
 									)
@@ -601,7 +603,7 @@ $( document ).ready( function() {
 			id: 'insert-bracket-match-details-dialog',
 			insertCallback: function( event, ui ) {
 				var wikitext, team1, team2,
-					s, sStart = '', sEnd = '', replaceText = '';
+					s, sStart = '', sMatchID = '', sEnd = '', replaceText = '';
 				$checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.size() ) {
 					$checked = $checked.first();
@@ -629,13 +631,13 @@ $( document ).ready( function() {
 							replaceText += processedGame.matchID + "\n";
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
-							sStart += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
-							sEnd += '\n' + processedGame.text;
+							sMatchID += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[i] + '\n';
+							sEnd += processedGame.text;
 						}
 
 						sEnd += '}}';
 
-						s = sStart + sEnd;
+						s = sStart + sMatchID + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
 						team1 = $checked.parent().siblings( '.radiant-team' ).text();
 						team2 = $checked.parent().siblings( '.dire-team' ).text();
@@ -761,6 +763,8 @@ $( document ).ready( function() {
 
 					$radiantTeam.text( result.teams['radiant'] );
 					$direTeam.text( result.teams['dire'] );
+					$radiantTeam.addClass( 'radiant-side' );
+					$direTeam.addClass( 'dire-side' );
 					if ( result.radiant_win !== undefined ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
@@ -820,12 +824,11 @@ $( document ).ready( function() {
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
 								)
-								+ h.element( 'td', { colspan: 4, class: 'series-title' },
+								+ h.element( 'td', { colspan: 2 }, 'Entire series' )
+								+ h.element( 'td', { colspan: 2, class: 'series-title' },
 									new h.Raw(
-										'Entire series - Team 1: '
-										+ h.element( 'span', { class: 'team1' }, team1 )
+										h.element( 'span', { class: 'team1' }, team1 )
 										+ h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } )
-										+ 'Team 2: '
 										+ h.element( 'span', { class: 'team2' }, team2 )
 										)
 									)
