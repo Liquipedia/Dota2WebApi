@@ -32,10 +32,12 @@
 .dota2webapi-result .match-id {
 	width: 100px;
 }
-.dota2webapi-result .radiant-side {
+.dota2webapi-result tr.odd td.radiant-side,
+.dota2webapi-result tr.even td.radiant-side {
 	background-color: #bcd985;
 }
-.dota2webapi-result .dire-side {
+.dota2webapi-result tr.odd td.dire-side,
+.dota2webapi-result tr.even td.dire-side {
 	background-color: #e79e7e;
 }
 .dota2webapi-result .match-data {
