@@ -110,7 +110,6 @@ $( document ).ready( function() {
 	function addInsertDialog( matchIDs, configuration ) {
 		$.extend( configuration, {
 			width: '700px',
-			maxWidth: '100%',
 			modal: true,
 			buttons: [
 				{
@@ -618,7 +617,7 @@ $( document ).ready( function() {
 
 						sStart = '{{BracketMatchSummary\n';
 						sStart += '|date=' + date + '\n';
-						sStart += '|finished=' + '\n';
+						sStart += '|finished=true' + '\n';
 
 						for ( var i = 0; i < matches.length; ++i ) {
 							var processedGame = processGameForBracketDetails( {
