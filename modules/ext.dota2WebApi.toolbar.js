@@ -21,12 +21,12 @@ $( document ).ready( function() {
 	} );
 	
 	$( document ).on( 'click', '.dota2webapi-result .match-row .switch-teams', function() {
-		var team1 = $( this ).siblings( '.team1' ).text(),
-			team2 = $( this ).siblings( '.team2' ).text();
-		$( this ).siblings( '.team1' ).text( team2 );
-		$( this ).siblings( '.team2' ).text( team1 );
-		$( this ).siblings( '.team1' ).toggleClass("radiant-side dire-side winning-faction");
-		$( this ).siblings( '.team2' ).toggleClass("radiant-side dire-side winning-faction");
+		var team1 = $( this ).siblings( '.radiant-team' ).text(),
+			team2 = $( this ).siblings( '.dire-team' ).text();
+		$( this ).siblings( '.radiant-team' ).text( team2 );
+		$( this ).siblings( '.dire-team' ).text( team1 );
+		$( this ).siblings( '.radiant-team' ).toggleClass("radiant-side dire-side winning-faction");
+		$( this ).siblings( '.dire-team' ).toggleClass("radiant-side dire-side winning-faction");
 	} );
 
 	function getHeroesData() {
