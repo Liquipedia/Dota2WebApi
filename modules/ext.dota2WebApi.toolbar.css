@@ -1,9 +1,6 @@
 .dota2webapi-result {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 5px;
-	margin-left: auto;
-	margin-right: auto;
 }
 .dota2webapi-result th,
 .dota2webapi-result td {
@@ -14,6 +11,9 @@
 }
 .dota2webapi-result th {
 	border-bottom: 2px solid black;
+}
+.dota2webapi-result th.switch-teams {
+	width: 30px;
 }
 .dota2webapi-result td {
 	border-bottom: 1px solid #ccc;
@@ -33,6 +33,10 @@
 }
 .dota2webapi-result .match-id {
 	width: 100px;
+}
+.dota2webapi-result tr.odd td.radiant-team,
+.dota2webapi-result tr.even td.radiant-team {
+	text-align: right;
 }
 .dota2webapi-result tr.odd td.radiant-side,
 .dota2webapi-result tr.even td.radiant-side {
@@ -64,10 +68,9 @@
 	/* @embed */
 	background-image: url(images/swap-14.png);
 	background-repeat: no-repeat;
-	width: 14px;
-	height: 14px;
-	margin: 0 10px;
-	vertical-align: middle;
+	background-position: center;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
 }
 .dota2webapi-result .match-row .switch-teams {
@@ -75,10 +78,9 @@
 	/* @embed */
 	background-image: url(images/swap-14.png);
 	background-repeat: no-repeat;
-	width: 14px;
-	height: 14px;
-	margin: 0 10px;
-	vertical-align: middle;
+	background-position: center;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
 }
 .group.group-insert-match-details .tool.tool-button {
