@@ -650,6 +650,7 @@ $( document ).ready( function() {
 						s = sStart + sMatchID + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
 						team1 = $checked.parent().siblings( '.radiant-team' ).text();
+						console.log(team1)
 						team2 = $checked.parent().siblings( '.dire-team' ).text();
 						var processedGame = processGameForBracketDetails( {
 							team1: team1,
