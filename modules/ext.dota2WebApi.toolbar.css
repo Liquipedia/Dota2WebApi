@@ -68,9 +68,10 @@
 	/* @embed */
 	background-image: url(images/swap-14.png);
 	background-repeat: no-repeat;
-	background-position: center;
-	width: 30px;
-	height: 30px;
+	width: 14px;
+	height: 14px;
+	margin: 0 10px;
+	vertical-align: middle;
 	cursor: pointer;
 }
 .dota2webapi-result .match-row .switch-teams {
