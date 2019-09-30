@@ -530,7 +530,7 @@ $( document ).ready( function() {
 	function processGameForFullDetails( params ) {
 		var winningFaction = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
 			matchID = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
-			winningTeamName = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-team' ).text(),
+			winningTeamName = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text(),
 			winningTeam,
 			radiantScore, direScore,
 			radiantPicks, direPicks,
@@ -650,7 +650,6 @@ $( document ).ready( function() {
 						s = sStart + sMatchID + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
 						team1 = $checked.parent().siblings( '.radiant-team' ).text();
-						console.log(team1)
 						team2 = $checked.parent().siblings( '.dire-team' ).text();
 						var processedGame = processGameForBracketDetails( {
 							team1: team1,
@@ -861,15 +860,17 @@ $( document ).ready( function() {
 	}
 
 	function processGameForBracketDetails( params ) {
+console.log(params);
 		var winningFaction = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
 			matchID = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
-			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-team' ).text(),
+			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text(),
 			winningTeam,
 			team1Side, team2Side,
 			team1Picks, team2Picks,
 			team1Bans, team2Bans;
 		var text = '';
 		winningTeam = winningTeamName === params.team1 ? 1 : 2;
+console.log("winningTeam: ", winningTeam, ", winningTeamName: ", winningTeamName, ", params.team1: ", params.team1);
 
 		var radiantPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
 		var direPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
