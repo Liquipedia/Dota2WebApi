@@ -325,7 +325,6 @@ $( document ).ready( function() {
 					end = '';
 
 				start += '|matchID=' + vars.matchIDs[i] + ' ';
-console.log(data);
 				if ( data.dota2webapi.isresult ) {
 					var result = data.dota2webapi.result;
 
@@ -440,11 +439,9 @@ console.log(data);
 					if ( result.radiant_win !== undefined ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
-console.log("processMatchForFullDetails - winning-faction - radiant");
 					} else {
 						$direTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'dire' );
-console.log("processMatchForFullDetails - winning-faction - dire");
 					}
 					$matchData.data( 'radiantScore', result.deaths.dire );
 					$matchData.data( 'direScore', result.deaths.radiant );
@@ -780,11 +777,9 @@ console.log("processMatchForFullDetails - winning-faction - dire");
 					if ( result.radiant_win !== undefined ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
-console.log("processMatchForBracketDetails - winning-faction - radiant");
 					} else {
 						$direTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'dire' );
-console.log("processMatchForBracketDetails - winning-faction - dire");
 					}
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
