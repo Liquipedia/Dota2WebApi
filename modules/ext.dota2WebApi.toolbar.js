@@ -437,7 +437,7 @@ console.log(data);
 					$direTeam.text( result.teams['dire'] );
 					$radiantTeam.addClass( 'radiant-side' );
 					$direTeam.addClass( 'dire-side' );
-					if ( result.radiant_win ) {
+					if ( result.radiant_win !== undefined ) {
 						$radiantTeam.addClass( 'winning-faction' );
 						$matchData.data( 'winningFaction', 'radiant' );
 console.log("processMatchForFullDetails - winning-faction - radiant");
