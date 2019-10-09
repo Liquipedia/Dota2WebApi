@@ -191,6 +191,10 @@ $( document ).ready( function() {
 				.appendTo( $( 'body' ) );
 		}
 	}
+	
+	function sortNumber( a, b ) {
+		return a - b;
+	}
 
 	var insertFullMatchDetails = function( context ) {
 		var selection,
@@ -212,6 +216,7 @@ $( document ).ready( function() {
 				matchIDsPars.push( matches[0] );
 			}
 		}
+		matchIDsPars.sort(sortNumber);
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert full match details',
@@ -606,6 +611,7 @@ $( document ).ready( function() {
 				matchIDsPars.push( matches[0] );
 			}
 		}
+		matchIDsPars.sort(sortNumber);
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert bracket match details',
