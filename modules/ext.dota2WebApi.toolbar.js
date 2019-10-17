@@ -3,7 +3,7 @@ $( document ).ready( function() {
 	if ( $.inArray( mw.config.get( 'wgAction' ), [ 'edit', 'submit' ] ) !== -1 ) {
 		mw.loader.using( 'user.options', function() {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
-				mw.loader.using( 'ext.wikiEditor.toolbar', function() {
+				mw.loader.using( 'ext.wikiEditor', function() {
 					$( document ).ready( function() {
 						addToToolbarInsertFullMatchDetails();
 						addToToolbarInsertBracketMatchDetails();
@@ -19,14 +19,14 @@ $( document ).ready( function() {
 		$( this ).siblings( '.team1' ).text( team2 );
 		$( this ).siblings( '.team2' ).text( team1 );
 	} );
-	
+
 	$( document ).on( 'click', '.dota2webapi-result .match-row .switch-teams', function() {
 		var team1 = $( this ).siblings( '.radiant-team' ).text(),
 			team2 = $( this ).siblings( '.dire-team' ).text();
 		$( this ).siblings( '.radiant-team' ).text( team2 );
 		$( this ).siblings( '.dire-team' ).text( team1 );
-		$( this ).siblings( '.radiant-team' ).toggleClass("radiant-side dire-side winning-faction");
-		$( this ).siblings( '.dire-team' ).toggleClass("radiant-side dire-side winning-faction");
+		$( this ).siblings( '.radiant-team' ).toggleClass( "radiant-side dire-side winning-faction" );
+		$( this ).siblings( '.dire-team' ).toggleClass( "radiant-side dire-side winning-faction" );
 	} );
 
 	function getHeroesData() {
@@ -191,7 +191,7 @@ $( document ).ready( function() {
 				.appendTo( $( 'body' ) );
 		}
 	}
-	
+
 	function sortNumber( a, b ) {
 		return a - b;
 	}
@@ -216,7 +216,7 @@ $( document ).ready( function() {
 				matchIDsPars.push( matches[0] );
 			}
 		}
-		matchIDsPars.sort(sortNumber);
+		matchIDsPars.sort( sortNumber );
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert full match details',
@@ -611,7 +611,7 @@ $( document ).ready( function() {
 				matchIDsPars.push( matches[0] );
 			}
 		}
-		matchIDsPars.sort(sortNumber);
+		matchIDsPars.sort( sortNumber );
 
 		addInsertDialog( matchIDsPars, {
 			title: 'Insert bracket match details',
