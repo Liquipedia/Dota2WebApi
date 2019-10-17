@@ -2,7 +2,7 @@
 	"name": "Dota2WebApi",
 	"version": "1.1.2",
 	"author": [
-		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]", 
+		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]",
 		"[https://fo-nttax.de FO-nTTaX]",
 		"Clubfan"
 	],
@@ -44,7 +44,7 @@
 		"dota2webapi": "ApiDota2WebApi"
 	},
 	"SpecialPages": {
-		"ShowMatch" : "SpecialShowMatch"
+		"ShowMatch": "SpecialShowMatch"
 	},
 	"ResourceModules": {
 		"ext.dota2WebApi.toolbar": {
@@ -60,7 +60,7 @@
 				"dota2webapi-items.json"
 			],
 			"dependencies": [
-				"ext.wikiEditor.toolbar",
+				"ext.wikiEditor",
 				"jquery.ui.dialog",
 				"mediawiki.util"
 			],
