@@ -82,7 +82,7 @@ $( document ).ready( function() {
 				'matchdetails-full': {
 					label: 'Full match details', // or use labelMsg for a localized label, see above
 					type: 'button',
-					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'Crystal_exec.png',
+					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cog_coloured.svg',
 					action: {
 						type: 'callback',
 						execute: function( context ) {
@@ -103,7 +103,7 @@ $( document ).ready( function() {
 				'matchdetails-bracket': {
 					label: 'Bracket match details', // or use labelMsg for a localized label, see above
 					type: 'button',
-					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'Crystal_kbackgammon_engine.png',
+					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cogs_coloured.svg',
 					action: {
 						type: 'callback',
 						execute: function( context ) {
