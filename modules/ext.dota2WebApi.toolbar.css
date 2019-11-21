@@ -85,6 +85,9 @@
 }
 .group.group-insert-match-details .tool.tool-button {
 	background-size: contain;
-	height: 20px;
+	margin: 0 3px;
+	height: 20.95px;
+	width: 20.95px;
+	opacity: 0.7;
 	background-position: inherit;
 }
