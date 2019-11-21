@@ -62,7 +62,7 @@ $( document ).ready( function() {
 
 		return items;
 	}
-	
+
 	function addToToolbarInsertBracketMatchDetails() {
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			'section': 'advanced',
@@ -93,7 +93,6 @@ $( document ).ready( function() {
 			}
 		} );
 	}
-	;
 
 	function addToToolbarInsertFullMatchDetails() {
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
@@ -114,7 +113,6 @@ $( document ).ready( function() {
 			}
 		} );
 	}
-	;
 
 	function addInsertDialog( matchIDs, configuration ) {
 		$.extend( configuration, {
