@@ -62,8 +62,8 @@ $( document ).ready( function() {
 
 		return items;
 	}
-
-	function addToToolbarInsertFullMatchDetails() {
+	
+	function addToToolbarInsertBracketMatchDetails() {
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			'section': 'advanced',
 			'groups': {
@@ -79,14 +79,14 @@ $( document ).ready( function() {
 			'section': 'advanced',
 			'group': 'insert-match-details',
 			'tools': {
-				'matchdetails-full': {
-					label: 'Full match details', // or use labelMsg for a localized label, see above
+				'matchdetails-bracket': {
+					label: 'Match details', // or use labelMsg for a localized label, see above
 					type: 'button',
 					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cog_coloured.svg',
 					action: {
 						type: 'callback',
 						execute: function( context ) {
-							insertFullMatchDetails( context );
+							insertBracketMatchDetails( context );
 						}
 					}
 				}
@@ -95,19 +95,19 @@ $( document ).ready( function() {
 	}
 	;
 
-	function addToToolbarInsertBracketMatchDetails() {
+	function addToToolbarInsertFullMatchDetails() {
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			'section': 'advanced',
 			'group': 'insert-match-details',
 			'tools': {
-				'matchdetails-bracket': {
-					label: 'Bracket match details', // or use labelMsg for a localized label, see above
+				'matchdetails-full': {
+					label: 'Full match details', // or use labelMsg for a localized label, see above
 					type: 'button',
 					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cogs_coloured.svg',
 					action: {
 						type: 'callback',
 						execute: function( context ) {
-							insertBracketMatchDetails( context );
+							insertFullMatchDetails( context );
 						}
 					}
 				}
