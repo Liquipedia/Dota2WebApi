@@ -5,8 +5,8 @@ $( document ).ready( function() {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
 				mw.loader.using( 'ext.wikiEditor', function() {
 					$( document ).ready( function() {
-						addToToolbarInsertFullMatchDetails();
 						addToToolbarInsertBracketMatchDetails();
+						addToToolbarInsertFullMatchDetails();
 					} );
 				} );
 			}
@@ -63,7 +63,7 @@ $( document ).ready( function() {
 		return items;
 	}
 
-	function addToToolbarInsertFullMatchDetails() {
+	function addToToolbarInsertBracketMatchDetails() {
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			'section': 'advanced',
 			'groups': {
@@ -79,31 +79,10 @@ $( document ).ready( function() {
 			'section': 'advanced',
 			'group': 'insert-match-details',
 			'tools': {
-				'matchdetails-full': {
-					label: 'Full match details', // or use labelMsg for a localized label, see above
-					type: 'button',
-					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'Crystal_exec.png',
-					action: {
-						type: 'callback',
-						execute: function( context ) {
-							insertFullMatchDetails( context );
-						}
-					}
-				}
-			}
-		} );
-	}
-	;
-
-	function addToToolbarInsertBracketMatchDetails() {
-		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
-			'section': 'advanced',
-			'group': 'insert-match-details',
-			'tools': {
 				'matchdetails-bracket': {
-					label: 'Bracket match details', // or use labelMsg for a localized label, see above
+					label: 'Match details', // or use labelMsg for a localized label, see above
 					type: 'button',
-					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'Crystal_kbackgammon_engine.png',
+					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cog_coloured.svg',
 					action: {
 						type: 'callback',
 						execute: function( context ) {
@@ -114,7 +93,26 @@ $( document ).ready( function() {
 			}
 		} );
 	}
-	;
+
+	function addToToolbarInsertFullMatchDetails() {
+		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
+			'section': 'advanced',
+			'group': 'insert-match-details',
+			'tools': {
+				'matchdetails-full': {
+					label: 'Full match details', // or use labelMsg for a localized label, see above
+					type: 'button',
+					icon: mw.config.get( 'wgDota2WebApiImagePath' ) + 'cogs_coloured.svg',
+					action: {
+						type: 'callback',
+						execute: function( context ) {
+							insertFullMatchDetails( context );
+						}
+					}
+				}
+			}
+		} );
+	}
 
 	function addInsertDialog( matchIDs, configuration ) {
 		$.extend( configuration, {
