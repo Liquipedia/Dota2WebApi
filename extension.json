@@ -18,9 +18,6 @@
 			"i18n"
 		]
 	},
-	"ExtensionMessagesFiles": {
-		"Dota2WebApiAlias": "Dota2WebApi.alias.php"
-	},
 	"AutoloadClasses": {
 		"Dota2WebApiResult": "Dota2WebApiResult.class.php",
 		"Dota2WebApiPlayer": "Dota2WebApiPlayer.class.php",
