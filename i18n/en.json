@@ -14,8 +14,5 @@
 	"dota2webapi-error-missing-api-key": "Dota 2 Web API key is missing",
 	"dota2webapi-error-no-valve-api-data": "No data retrieved from Valve API",
 	"dota2webapi-error-message-from-valve-api": "Error message from Valve API:",
-	"dota2webapi-detected-matchid-number": "{{PLURAL:$1|One match ID has|$1 match IDs have}} been detected.",
-	"showmatch": "Show Dota2 Match",
-
-	"specialpages-group-liquipedia": "Liquipedia"
+	"dota2webapi-detected-matchid-number": "{{PLURAL:$1|One match ID has|$1 match IDs have}} been detected."
 }
