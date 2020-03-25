@@ -1,6 +1,6 @@
 {
 	"name": "Dota2WebApi",
-	"version": "1.1.2",
+	"version": "1.2.0",
 	"author": [
 		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]",
 		"[https://fo-nttax.de FO-nTTaX]",
@@ -11,7 +11,10 @@
 	"license-name": "MIT",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.28.0"
+		"MediaWiki": ">= 1.28.0",
+		"extensions": {
+			"Dota2DB": "*"
+		}
 	},
 	"MessagesDirs": {
 		"Dota2WebApi": [

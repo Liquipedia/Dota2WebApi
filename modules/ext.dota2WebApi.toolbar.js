@@ -315,7 +315,7 @@ $( document ).ready( function() {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			data: {
-				action: 'dota2webapi',
+				action: 'dota2dbapi',
 				matchid: vars.matchIDs[i],
 				data: 'picks_bans|kills_deaths|players|radiant_win|teams|start_time',
 				format: 'json'
@@ -703,7 +703,7 @@ $( document ).ready( function() {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
 			data: {
-				action: 'dota2webapi',
+				action: 'dota2dbapi',
 				matchid: vars.matchIDs[i],
 				data: 'picks_bans|duration|radiant_win|teams|start_time',
 				format: 'json'
