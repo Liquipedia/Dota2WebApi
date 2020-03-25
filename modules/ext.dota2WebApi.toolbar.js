@@ -328,8 +328,8 @@ $( document ).ready( function() {
 					end = '';
 
 				start += '|matchID=' + vars.matchIDs[i] + ' ';
-				if ( data.dota2webapi.isresult ) {
-					var result = data.dota2webapi.result;
+				if ( data.dota2dbapi.isresult ) {
+					var result = data.dota2dbapi.result;
 
 					start += '|VOD=' + '\n';
 
@@ -460,7 +460,7 @@ $( document ).ready( function() {
 					$matchData.data( 'wikitextEnd', end );
 					$status.text( 'Success' );
 				} else {
-					$status.text( data.dota2webapi.result.error );
+					$status.text( data.dota2dbapi.result.error );
 				}
 
 				$status.removeClass( 'loading' );
@@ -714,8 +714,8 @@ $( document ).ready( function() {
 					radiantBans, direBans,
 					end = '';
 
-				if ( data.dota2webapi.isresult ) {
-					var result = data.dota2webapi.result;
+				if ( data.dota2dbapi.isresult ) {
+					var result = data.dota2dbapi.result;
 
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						radiantPicks = '';
@@ -793,7 +793,7 @@ $( document ).ready( function() {
 					$matchData.data( 'wikitextEnd', end );
 					$status.text( 'Success' );
 				} else {
-					$status.text( data.dota2webapi.result.error );
+					$status.text( data.dota2dbapi.result.error );
 				}
 
 				$status.removeClass( 'loading' );
