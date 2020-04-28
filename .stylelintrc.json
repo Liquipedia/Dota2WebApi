@@ -1,0 +1,7 @@
+{
+	"extends": "stylelint-config-wikimedia",
+	"rules": {
+		"color-hex-length": "long",
+		"unit-blacklist": null
+	}
+}

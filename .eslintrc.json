@@ -1,0 +1,20 @@
+{
+	"extends": [
+		"wikimedia/client",
+		"wikimedia/jquery",
+		"wikimedia/mediawiki"
+	],
+	"globals": {
+		"require": "readonly",
+		"module": "readonly",
+		"OO": "readonly"
+	},
+	"rules": {
+		"space-before-function-paren": "off",
+		"no-jquery/no-global-selector": "off",
+		"no-jquery/no-sizzle": "off",
+		"vars-on-top": "off",
+		"one-var": "off",
+		"no-redeclare": "off"
+	}
+}

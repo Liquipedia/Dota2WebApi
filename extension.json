@@ -1,6 +1,6 @@
 {
 	"name": "Dota2WebApi",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"author": [
 		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]",
 		"[https://fo-nttax.de FO-nTTaX]",
@@ -11,7 +11,7 @@
 	"license-name": "MIT",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.28.0",
+		"MediaWiki": ">= 1.31.0",
 		"extensions": {
 			"Dota2DB": "*"
 		}
@@ -21,34 +21,24 @@
 			"i18n"
 		]
 	},
-	"AutoloadClasses": {
-		"Dota2WebApiResult": "Dota2WebApiResult.class.php",
-		"Dota2WebApiPlayer": "Dota2WebApiPlayer.class.php",
-		"Dota2WebApiHooks": "Dota2WebApi.hooks.php",
-		"ApiDota2WebApi": "ApiDota2WebApi.php",
-		"Dota2WebApiMatchInfo": "Dota2WebApiMatchInfo.php"
+	"AutoloadNamespaces": {
+		"Liquipedia\\Dota2WebApi\\": "src/"
 	},
 	"Hooks": {
 		"EditPage::showEditForm:initial": [
-			"Dota2WebApiHooks::onEditPage_showEditForm_initial"
+			"Liquipedia\\Dota2WebApi\\Hooks::onEditPageShowEditFormInitial"
 		],
 		"MakeGlobalVariablesScript": [
-			"Dota2WebApiHooks::onMakeGlobalVariablesScript"
-		],
-		"LoadExtensionSchemaUpdates": [
-			"Dota2WebApiHooks::onLoadExtensionSchemaUpdates"
+			"Liquipedia\\Dota2WebApi\\Hooks::onMakeGlobalVariablesScript"
 		]
-	},
-	"APIModules": {
-		"dota2webapi": "ApiDota2WebApi"
 	},
 	"ResourceModules": {
 		"ext.dota2WebApi.toolbar": {
 			"styles": [
-				"modules/ext.dota2WebApi.toolbar.css"
+				"resources/styles/ext.dota2WebApi.toolbar.css"
 			],
 			"scripts": [
-				"modules/ext.dota2WebApi.toolbar.js"
+				"resources/scripts/ext.dota2WebApi.toolbar.js"
 			],
 			"messages": [
 				"dota2webapi-detected-matchid-number",

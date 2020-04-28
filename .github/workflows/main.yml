@@ -1,0 +1,41 @@
+name: Code Style
+
+on: [ push, pull_request ]
+
+jobs:
+  test-php:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install composer dependencies
+      run: composer install
+
+
+    - name: Run composer tests
+      run: composer test
+
+  test-javascript:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Run npm tests
+      run: npm run test-script
+
+  test-style:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Run npm tests
+      run: npm run test-style

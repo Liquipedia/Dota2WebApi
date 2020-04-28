@@ -2,71 +2,83 @@
 	width: 100%;
 	border-collapse: collapse;
 }
-.dota2webapi-result th,
+
 .dota2webapi-result td {
 	padding: 3px;
+	border-bottom: 1px solid #cccccc;
+	line-height: 18px;
 }
+
 .dota2webapi-result th {
+	padding: 3px;
 	text-align: left;
+	border-bottom: 2px solid #000000;
 }
-.dota2webapi-result th {
-	border-bottom: 2px solid black;
-}
+
 .dota2webapi-result th.switch-teams {
 	width: 30px;
 }
-.dota2webapi-result td {
-	border-bottom: 1px solid #ccc;
-	line-height: 18px;
-}
+
 .dota2webapi-result tr.even td {
 	background-color: #dfdfdf;
 }
+
 .dota2webapi-result tr.odd td {
 	background-color: #efefef;
 }
+
 .dota2webapi-result tr.teams td {
 	background-color: #ffe8d8;
 }
+
 .dota2webapi-result .insert-selection {
 	width: 15px;
 }
+
 .dota2webapi-result .match-id {
 	width: 100px;
 }
+
 .dota2webapi-result tr.odd td.radiant-team,
 .dota2webapi-result tr.even td.radiant-team {
 	text-align: right;
 }
+
 .dota2webapi-result tr.odd td.radiant-side,
 .dota2webapi-result tr.even td.radiant-side {
 	background-color: #bcd985;
 }
+
 .dota2webapi-result tr.odd td.dire-side,
 .dota2webapi-result tr.even td.dire-side {
 	background-color: #e79e7e;
 }
+
 .dota2webapi-result .match-data {
 	display: none;
 }
+
 .dota2webapi-result .winning-faction {
 	font-weight: bold;
 }
+
 .dota2webapi-result .status.loading {
 	/* @embed */
-	background-image: url(images/loading.gif);
+	background-image: url( images/loading.gif );
 	background-position: left center;
 	background-repeat: no-repeat;
 	padding-left: 20px;
 }
+
 .dota2webapi-result .series-title .team1,
 .dota2webapi-result .series-title .team2 {
 	font-weight: bold;
 }
+
 .dota2webapi-result .series-title .switch-teams {
 	display: inline-block;
 	/* @embed */
-	background-image: url(images/swap-14.png);
+	background-image: url( images/swap-14.png );
 	background-repeat: no-repeat;
 	width: 14px;
 	height: 14px;
@@ -74,15 +86,17 @@
 	vertical-align: middle;
 	cursor: pointer;
 }
+
 .dota2webapi-result .match-row .switch-teams {
 	/* @embed */
-	background-image: url(images/swap-14.png);
+	background-image: url( images/swap-14.png );
 	background-repeat: no-repeat;
 	background-position: center;
 	width: 30px;
 	height: 30px;
 	cursor: pointer;
 }
+
 .group.group-insert-match-details .tool.tool-button {
 	background-size: contain;
 	height: 20px;

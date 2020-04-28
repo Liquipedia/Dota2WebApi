@@ -1,0 +1,24 @@
+{
+	"name": "dota2webapi",
+	"homepage": "https://liquipedia.net",
+	"bugs": {
+		"email": "liquipedia@teamliquid.net"
+	},
+	"license": "NOASSERTION",
+	"private": true,
+	"dependencies": {
+		"bootstrap": "^4.4.1"
+	},
+	"devDependencies": {
+		"eslint-config-wikimedia": "*",
+		"stylelint-config-wikimedia": "*"
+	},
+	"scripts": {
+		"test": "eslint resources/scripts/ && stylelint resources/styles/",
+		"fix": "eslint resources/scripts/ --fix && stylelint resources/styles/ --fix",
+		"test-script": "eslint resources/scripts/",
+		"fix-script": "eslint resources/scripts/ --fix",
+		"test-style": "stylelint resources/styles/",
+		"fix-style": "stylelint resources/styles/ --fix"
+	}
+}
