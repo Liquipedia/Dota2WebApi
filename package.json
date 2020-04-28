@@ -6,9 +6,6 @@
 	},
 	"license": "NOASSERTION",
 	"private": true,
-	"dependencies": {
-		"bootstrap": "^4.4.1"
-	},
 	"devDependencies": {
 		"eslint-config-wikimedia": "*",
 		"stylelint-config-wikimedia": "*"
