@@ -2,7 +2,7 @@
 	"name": "dota2webapi",
 	"homepage": "https://liquipedia.net",
 	"bugs": {
-		"email": "liquipedia@teamliquid.net"
+		"email": "contact@liquipedia.net"
 	},
 	"license": "NOASSERTION",
 	"private": true,
