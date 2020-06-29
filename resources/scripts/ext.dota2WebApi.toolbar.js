@@ -176,7 +176,7 @@ $( function() {
 						radiantPicks += '\n';
 
 						radiantBans = '';
-						for ( var j = 1; j <= 6; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							radiantBans += '|t{r}b' + j + '=';
 							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -198,7 +198,7 @@ $( function() {
 						direPicks += '\n';
 
 						direBans = '';
-						for ( var j = 1; j <= 6; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							direBans += '|t{d}b' + j + '=';
 							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -210,8 +210,8 @@ $( function() {
 					} else {
 						radiantPicks = '|t{r}h1= |t{r}h2= |t{r}h3= |t{r}h4= |t{r}h5=\n';
 						direPicks = '|t{d}h1= |t{d}h2= |t{d}h3= |t{d}h4= |t{d}h5=\n';
-						radiantBans = '|t{r}b1= |t{r}b2= |t{r}b3= |t{r}b4= |t{r}b5= |t{r}b6=\n';
-						direBans = '|t{d}b1= |t{d}b2= |t{d}b3= |t{d}b4= |t{d}b5= |t{d}b6=\n';
+						radiantBans = '|t{r}b1= |t{r}b2= |t{r}b3= |t{r}b4= |t{r}b5= |t{r}b6= |t{r}b7=\n';
+						direBans = '|t{d}b1= |t{d}b2= |t{d}b3= |t{d}b4= |t{d}b5= |t{d}b6= |t{d}b7=\n';
 					}
 
 					end += '|length=';
@@ -564,7 +564,7 @@ $( function() {
 
 						// radiantBans = "{{MatchSeries/Bans";
 						radiantBans = [ ];
-						for ( var j = 1; j <= 6; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
 								radiantBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
@@ -575,7 +575,7 @@ $( function() {
 
 						// direBans = "{{MatchSeries/Bans";
 						direBans = [ ];
-						for ( var j = 1; j <= 6; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
 								direBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
