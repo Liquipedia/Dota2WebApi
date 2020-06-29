@@ -344,8 +344,7 @@ $( function() {
 			id: 'insert-bracket-match-details-dialog',
 			insertCallback: function() {
 				var wikitext, team1, team2,
-					/* eslint-disable-next-line no-unused-vars */
-					s, sStart = '', sMatchID = '', sEnd = '', replaceText = '';
+					s, sStart = '', sMatchID = '', sEnd = ''; // , replaceText = '';
 				var $checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.length ) {
 					$checked = $checked.first();
@@ -372,7 +371,7 @@ $( function() {
 								row: matches[ i ]
 							} );
 
-							replaceText += processedGame.matchID + '\n';
+							// replaceText += processedGame.matchID + '\n';
 
 							sStart += '|vodgame' + ( i + 1 ) + '=\n';
 							sMatchID += '|matchid' + ( i + 1 ) + '=' + matchIDsPars[ i ] + '\n';
@@ -392,7 +391,7 @@ $( function() {
 							row: $checked.attr( 'rel' )
 						} );
 						s = processedGame.text;
-						replaceText += processedGame.matchID + '\n';
+						// replaceText += processedGame.matchID + '\n';
 					}
 				}
 				$.wikiEditor.modules.toolbar.fn.doAction(
@@ -765,8 +764,7 @@ $( function() {
 			id: 'insert-full-match-details-dialog',
 			insertCallback: function() {
 				var wikitext, team1, team2,
-					/* eslint-disable-next-line no-unused-vars */
-					s, sStart = '', sEnd = '', replaceText = '';
+					s, sStart = '', sEnd = ''; // , replaceText = '';
 				var $checked = $( '#insert-full-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.length ) {
 					$checked = $checked.first();
@@ -787,7 +785,7 @@ $( function() {
 								row: matches[ i ]
 							} );
 
-							replaceText += processedGame.matchID + '\n';
+							// replaceText += processedGame.matchID + '\n';
 
 							sEnd += '\n' + processedGame.text;
 
@@ -816,7 +814,7 @@ $( function() {
 							row: $checked.attr( 'rel' )
 						} );
 						s = processedGame.text;
-						replaceText += processedGame.matchID + '\n';
+						// replaceText += processedGame.matchID + '\n';
 					}
 				}
 				$.wikiEditor.modules.toolbar.fn.doAction(
