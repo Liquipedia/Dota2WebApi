@@ -320,7 +320,7 @@ $( function() {
 		var selection,
 			matchIDs,
 			matchIDsPars = [ ],
-			vars;
+			vars, i = 0;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
 		if ( selection === '' ) {
@@ -331,7 +331,7 @@ $( function() {
 
 		matchIDs = selection.split( /\r\n|\n| / );
 
-		for ( var i = 0; i < matchIDs.length; i++ ) {
+		for ( i = 0; i < matchIDs.length; i++ ) {
 			var matches = matchIDs[ i ].match( /\d{8,}/g );
 			if ( matches !== null ) {
 				matchIDsPars.push( matches[ 0 ] );
@@ -350,8 +350,8 @@ $( function() {
 					$checked = $checked.first();
 					wikitext = $checked.parent().siblings( '.match-data' ).text();
 					if ( $checked.attr( 'class' ) === 'series-radio' ) {
-						var matches = wikitext.split( ',' ),
-							date = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' );
+						matches = wikitext.split( ',' );
+						var date = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' );
 
 						team1 = $checked.parent().siblings( '.series-title' ).find( '.team1' ).text();
 						team2 = $checked.parent().siblings( '.series-title' ).find( '.team2' ).text();
@@ -363,7 +363,7 @@ $( function() {
 						sStart += '|finished=true';
 						sStart += '\n';
 
-						for ( var i = 0; i < matches.length; ++i ) {
+						for ( i = 0; i < matches.length; ++i ) {
 							var processedGame = processGameForBracketDetails( {
 								team1: team1,
 								team2: team2,
@@ -740,7 +740,7 @@ $( function() {
 		var selection,
 			matchIDs,
 			matchIDsPars = [ ],
-			vars;
+			vars, i = 0;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
 		if ( selection === '' ) {
@@ -751,7 +751,7 @@ $( function() {
 
 		matchIDs = selection.split( /\r\n|\n| / );
 
-		for ( var i = 0; i < matchIDs.length; i++ ) {
+		for ( i = 0; i < matchIDs.length; i++ ) {
 			var matches = matchIDs[ i ].match( /\d{8,}/g );
 			if ( matches !== null ) {
 				matchIDsPars.push( matches[ 0 ] );
@@ -770,14 +770,14 @@ $( function() {
 					$checked = $checked.first();
 					wikitext = $checked.parent().siblings( '.match-data' ).text();
 					if ( $checked.attr( 'class' ) === 'series-radio' ) {
-						var matches = wikitext.split( ',' ),
-							date = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' ),
+						matches = wikitext.split( ',' );
+						var date = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' ),
 							team1Score = 0, team2Score = 0;
 
 						team1 = $checked.parent().siblings( '.series-title' ).find( '.team1' ).text();
 						team2 = $checked.parent().siblings( '.series-title' ).find( '.team2' ).text();
 
-						for ( var i = 0; i < matches.length; ++i ) {
+						for ( i = 0; i < matches.length; ++i ) {
 							var processedGame = processGameForFullDetails( {
 								team1: team1,
 								team2: team2,
@@ -851,7 +851,6 @@ $( function() {
 			}
 		} );
 		$( '.wikiEditor-ui-toolbar .group-insert' ).css( 'border-right', 'solid 1px #DDDDDD' );
-		$( '.wikiEditor-ui-toolbar .group-insert-match-details' ).css( 'border-right', 'none' );
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			section: 'advanced',
 			group: 'insert-match-details',

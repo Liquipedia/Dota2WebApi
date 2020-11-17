@@ -19,8 +19,8 @@ class Hooks {
 		if ( isset( $extensionAssetsPath ) && $extensionAssetsPath !== false ) {
 			$extensionPath = $extensionAssetsPath;
 		}
-		$wgDota2WebApiImagePath = $extensionPath . '/Dota2WebApi/resources/images/';
-		$vars[ 'wgDota2WebApiImagePath' ] = $wgDota2WebApiImagePath;
+		$dota2WebApiImagePath = $extensionPath . '/Dota2WebApi/resources/images/';
+		$vars[ 'wgDota2WebApiImagePath' ] = $dota2WebApiImagePath;
 		return true;
 	}
 
