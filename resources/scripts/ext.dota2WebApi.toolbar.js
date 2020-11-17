@@ -851,7 +851,6 @@ $( function() {
 			}
 		} );
 		$( '.wikiEditor-ui-toolbar .group-insert' ).css( 'border-right', 'solid 1px #DDDDDD' );
-		$( '.wikiEditor-ui-toolbar .group-insert-match-details' ).css( 'border-right', 'none' );
 		$( '#wpTextbox1' ).wikiEditor( 'addToToolbar', {
 			section: 'advanced',
 			group: 'insert-match-details',
