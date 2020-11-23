@@ -29,15 +29,15 @@ $( function() {
 				new h.Raw(
 					h.element( 'td', { class: 'insert-selection' },
 						new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'match-radio', rel: i } ) )
-						) +
+					) +
 					h.element( 'td', { class: 'match-id' }, String( matchIDs[ i ] ) ) +
 					h.element( 'td', { class: 'status' }, 'Waiting...' ) +
 					h.element( 'td', { class: 'radiant-team' }, '-' ) +
 					h.element( 'td', { class: 'switch-teams', title: 'Switch team 1 / team 2' } ) +
 					h.element( 'td', { class: 'dire-team' }, '-' ) +
 					h.element( 'td', { class: 'match-data' }, '' )
-					)
-				);
+				)
+			);
 		}
 		output += '</table>';
 
@@ -290,15 +290,15 @@ $( function() {
 							$newTr = $( '<tr>' );
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
-								) +
+							) +
 								h.element( 'td', { colspan: 2 }, 'Entire series' ) +
 								h.element( 'td', { colspan: 3, class: 'series-title' },
 									new h.Raw(
 										h.element( 'span', { class: 'team1' }, team1 ) +
 										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } ) +
 										h.element( 'span', { class: 'team2' }, team2 )
-										)
-									) +
+									)
+								) +
 								h.element( 'td', { class: 'match-data' }, series[ team1 ][ team2 ].join( ',' ) );
 							$newTr.html( rowHtml )
 								.addClass( 'teams' );
@@ -404,7 +404,7 @@ $( function() {
 						}
 					},
 					$( this )
-					);
+				);
 				$( this ).dialog( 'close' );
 			}
 		} );
@@ -712,15 +712,15 @@ $( function() {
 							$newTr = $( '<tr>' );
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
-								) +
+							) +
 								h.element( 'td', { colspan: 2 }, 'Entire series' ) +
 								h.element( 'td', { colspan: 3, class: 'series-title' },
 									new h.Raw(
 										h.element( 'span', { class: 'team1' }, team1 ) +
 										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } ) +
 										h.element( 'span', { class: 'team2' }, team2 )
-										)
-									) +
+									)
+								) +
 								h.element( 'td', { class: 'match-data' }, series[ team1 ][ team2 ].join( ',' ) );
 							$newTr.html( rowHtml )
 								.addClass( 'teams' );
@@ -828,7 +828,7 @@ $( function() {
 						}
 					},
 					$( this )
-					);
+				);
 				$( this ).dialog( 'close' );
 			}
 		} );
