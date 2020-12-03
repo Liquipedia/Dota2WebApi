@@ -151,6 +151,7 @@ $( function() {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
 				data: 'picks_bans|duration|radiant_win|teams|start_time',
+				pagename: mw.config.get( 'wgPageName' ),
 				format: 'json'
 			}
 		} )
@@ -521,6 +522,7 @@ $( function() {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
 				data: 'picks_bans|kills_deaths|players|radiant_win|teams|start_time',
+				pagename: mw.config.get( 'wgPageName' ),
 				format: 'json'
 			}
 		} )
