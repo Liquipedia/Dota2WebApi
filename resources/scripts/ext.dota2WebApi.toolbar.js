@@ -166,8 +166,8 @@ $( function() {
 
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						radiantPicks = '';
-						var heroId, j;
-						for ( j = 1; j <= 5; ++j ) {
+						var heroId;
+						for ( var j = 1; j <= 5; ++j ) {
 							radiantPicks += '|t{r}h' + j + '=';
 							if ( ( heroId = result.picks_bans.radiant[ 'pick_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -178,7 +178,7 @@ $( function() {
 						radiantPicks += '\n';
 
 						radiantBans = '';
-						for ( j = 1; j <= 7; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							radiantBans += '|t{r}b' + j + '=';
 							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -189,7 +189,7 @@ $( function() {
 						radiantBans += '\n';
 
 						direPicks = '';
-						for ( j = 1; j <= 5; ++j ) {
+						for ( var j = 1; j <= 5; ++j ) {
 							direPicks += '|t{d}h' + j + '=';
 							if ( ( heroId = result.picks_bans.dire[ 'pick_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -200,7 +200,7 @@ $( function() {
 						direPicks += '\n';
 
 						direBans = '';
-						for ( j = 1; j <= 7; ++j ) {
+						for ( var j = 1; j <= 7; ++j ) {
 							direBans += '|t{d}b' + j + '=';
 							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -267,16 +267,16 @@ $( function() {
 						series = { },
 						$newTr,
 						$matchTr,
-						rowHtml = '', j;
+						rowHtml = '';
 
-					for ( j = 0; j < vars.teams.length; j++ ) {
+					for ( var j = 0; j < vars.teams.length; j++ ) {
 						var tmp = [ vars.teams[ j ].radiant, vars.teams[ j ].dire ];
 						sortedTeams.push( tmp.sort() );
 					}
-					var team1, team2;
-					for ( j = 0; j < sortedTeams.length; j++ ) {
-						team1 = sortedTeams[ j ][ 0 ];
-						team2 = sortedTeams[ j ][ 1 ];
+
+					for ( var j = 0; j < sortedTeams.length; j++ ) {
+						var team1 = sortedTeams[ j ][ 0 ],
+							team2 = sortedTeams[ j ][ 1 ];
 						if ( series[ team1 ] === undefined ) {
 							series[ team1 ] = { };
 						}
@@ -285,9 +285,9 @@ $( function() {
 						}
 						series[ team1 ][ team2 ].push( j );
 					}
-					var team1, team2;
-					for ( team1 in series ) {
-						for ( team2 in series[ team1 ] ) {
+
+					for ( var team1 in series ) {
+						for ( var team2 in series[ team1 ] ) {
 							$newTr = $( '<tr>' );
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
