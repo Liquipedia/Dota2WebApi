@@ -1,4 +1,5 @@
 $( function() {
+	/* eslint-disable block-scoped-var */
 	function sortNumber( a, b ) {
 		return a - b;
 	}
