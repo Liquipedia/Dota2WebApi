@@ -1,6 +1,6 @@
 {
 	"name": "Dota2WebApi",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"author": [
 		"[https://liquipedia.net/starcraft2/User:ChapatiyaqPTSM Chapatiyaq]",
 		"[https://fo-nttax.de FO-nTTaX]",
@@ -11,7 +11,7 @@
 	"license-name": "MIT",
 	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.35.0",
+		"MediaWiki": ">= 1.35.3",
 		"extensions": {
 			"Dota2DB": "*"
 		}
@@ -22,15 +22,16 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"Liquipedia\\Dota2WebApi\\": "src/"
+		"Liquipedia\\Extension\\Dota2WebApi\\": "src/"
+	},
+	"HookHandlers": {
+		"Main": {
+			"class": "\\Liquipedia\\Extension\\Dota2WebApi\\Hooks\\MainHookHandler"
+		}
 	},
 	"Hooks": {
-		"EditPage::showEditForm:initial": [
-			"Liquipedia\\Dota2WebApi\\Hooks::onEditPageShowEditFormInitial"
-		],
-		"MakeGlobalVariablesScript": [
-			"Liquipedia\\Dota2WebApi\\Hooks::onMakeGlobalVariablesScript"
-		]
+		"EditPage::showEditForm:initial": "Main",
+		"MakeGlobalVariablesScript": "Main"
 	},
 	"ResourceModules": {
 		"ext.dota2WebApi.toolbar": {
@@ -57,5 +58,5 @@
 		"localBasePath": "",
 		"remoteExtPath": "Dota2WebApi"
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }
