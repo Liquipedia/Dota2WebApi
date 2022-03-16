@@ -40,7 +40,9 @@ $( function() {
 				)
 			);
 		}
-		output += '</table>';
+		output += '</table><br>';
+		output += '<input type="checkbox" id="dota2db-dialog-match2-output" name="dota2db-dialog-match2-output">';
+		output += '<label for="dota2db-dialog-match2-output">' + mw.message( 'dota2db-dialog-match2-output' ).text() + '</label><br>';
 
 		return output;
 	}
@@ -80,7 +82,7 @@ $( function() {
 		$( '#' + configuration.id + ' .dota2webapi-result tr:odd' ).addClass( 'odd' );
 	}
 
-	function processGameForBracketDetails( params ) {
+	function processGameForBracketDetails( params, match2 ) {
 		var winningFaction = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
 			matchID = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
 			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text(),
@@ -112,14 +114,25 @@ $( function() {
 			team2Bans = radiantBans.replace( /\{r\}/g, 2 );
 		}
 
-		text += '|match' + params.matchIndex + '={{Match\n';
+		if ( match2 ) {
+			text += '|map' + params.matchIndex + '={{Map\n';
+		} else {
+			text += '|match' + params.matchIndex + '={{Match\n';
+		}
+
 		text += '|team1side=' + team1Side + '\n';
 		text += team1Picks;
 		text += team1Bans;
 		text += '|team2side=' + team2Side + '\n';
 		text += team2Picks;
 		text += team2Bans;
-		text += $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'wikitextEnd' ).replace( '{w}', winningTeam );
+		if ( match2 ) {
+			text += $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' )
+				.data( 'wikitextEnd' ).replace( 'win', 'winner' ).replace( '{w}', winningTeam );
+		} else {
+			text += $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' )
+				.data( 'wikitextEnd' ).replace( '{w}', winningTeam );
+		}
 
 		return { winningTeam: winningTeam, matchID: matchID, text: text };
 	}
@@ -322,7 +335,7 @@ $( function() {
 		var selection,
 			matchIDs,
 			matchIDsPars = [ ],
-			vars, i = 0;
+			vars, i = 0, match2 = false;
 		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
 		if ( selection === '' ) {
@@ -345,6 +358,9 @@ $( function() {
 			title: 'Insert bracket match details',
 			id: 'insert-bracket-match-details-dialog',
 			insertCallback: function() {
+				if ( $( '#dota2db-dialog-match2-output' ).is( ':checked' ) ) {
+					match2 = true;
+				}
 				var wikitext, team1, team2,
 					s, sStart = '', sMatchID = '', sEnd = ''; // , replaceText = '';
 				var $checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
@@ -358,7 +374,11 @@ $( function() {
 						team1 = $checked.parent().siblings( '.series-title' ).find( '.team1' ).text();
 						team2 = $checked.parent().siblings( '.series-title' ).find( '.team2' ).text();
 
-						sStart = '{{BracketMatchSummary\n';
+						if ( !match2 ) {
+							sStart = '{{BracketMatchSummary\n';
+						} else {
+							sStart = '';
+						}
 						sStart += '|date=';
 						sStart += date;
 						sStart += '\n';
@@ -371,7 +391,7 @@ $( function() {
 								team2: team2,
 								matchIndex: i + 1,
 								row: matches[ i ]
-							} );
+							}, match2 );
 
 							// replaceText += processedGame.matchID + '\n';
 
@@ -380,7 +400,11 @@ $( function() {
 							sEnd += processedGame.text;
 						}
 
-						sEnd += '}}';
+						if ( !match2 ) {
+							sEnd += '}}';
+						} else {
+							sEnd = String( sEnd );
+						}
 
 						s = sStart + sMatchID + sEnd;
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
@@ -391,7 +415,7 @@ $( function() {
 							team2: team2,
 							matchIndex: 1,
 							row: $checked.attr( 'rel' )
-						} );
+						}, match2 );
 						s = processedGame.text;
 						// replaceText += processedGame.matchID + '\n';
 					}

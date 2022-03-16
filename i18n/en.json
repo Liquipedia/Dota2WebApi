@@ -9,6 +9,7 @@
 	"dota2webapi-api-description": "Get data of a match from the Dota 2 Web API.",
 	"dota2webapi-api-matchid-description": "The ID of the match of which you want to pull data from the Dota 2 Web API",
 	"dota2webapi-api-data-description": "Which data to get.",
+	"dota2db-dialog-match2-output": "Match2 Output (Only works with bracket details)",
 	"dota2webapi-error-non-strictly-positive-match-id": "You must select a numeric match ID > 0",
 	"dota2webapi-error-retrieving-local-data": "Error while retrieving local data",
 	"dota2webapi-error-missing-api-key": "Dota 2 Web API key is missing",
