@@ -43,6 +43,7 @@
 			],
 			"messages": [
 				"dota2webapi-detected-matchid-number",
+				"dota2db-dialog-match2-output",
 				"dota2webapi-heroes.json",
 				"dota2webapi-items.json"
 			],
