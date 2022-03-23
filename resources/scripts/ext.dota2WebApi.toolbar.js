@@ -41,7 +41,7 @@ $( function() {
 			);
 		}
 		output += '</table><br>';
-		output += '<input type="checkbox" id="dota2db-dialog-match2-output" name="dota2db-dialog-match2-output">';
+		output += '<input type="checkbox" id="dota2db-dialog-match2-output" name="dota2db-dialog-match2-output" checked>';
 		output += '<label for="dota2db-dialog-match2-output">' + mw.message( 'dota2db-dialog-match2-output' ).text() + '</label><br>';
 
 		return output;
