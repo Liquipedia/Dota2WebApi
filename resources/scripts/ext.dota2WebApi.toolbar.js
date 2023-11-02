@@ -1,13 +1,12 @@
 $( function() {
-	/* eslint-disable block-scoped-var */
 	function sortNumber( a, b ) {
 		return a - b;
 	}
 
 	function dialogHtml( matchIDs ) {
-		var h = mw.html,
-			length = matchIDs.length,
-			output = '';
+		const h = mw.html,
+			length = matchIDs.length;
+		let output = '';
 
 		output += mw.message( 'dota2webapi-detected-matchid-number', length ).text();
 		if ( length > 5 ) {
@@ -25,7 +24,7 @@ $( function() {
 		output += '<th class="dire-team">Team 2</th>';
 		output += '<th class="match-data">Match data</th>';
 		output += '</tr>';
-		for ( var i = 0; i < matchIDs.length; i++ ) {
+		for ( let i = 0; i < matchIDs.length; i++ ) {
 			output += h.element( 'tr', { class: 'match-row match-' + parseInt( i ) },
 				new h.Raw(
 					h.element( 'td', { class: 'insert-selection' },
@@ -83,20 +82,19 @@ $( function() {
 	}
 
 	function processGameForBracketDetails( params, match2 ) {
-		var winningFaction = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
+		const winningFaction = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
 			matchID = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
-			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text(),
-			winningTeam,
-			team1Side, team2Side,
+			winningTeamName = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text();
+		let team1Side, team2Side,
 			team1Picks, team2Picks,
 			team1Bans, team2Bans;
-		var text = '';
-		winningTeam = winningTeamName === params.team1 ? 1 : 2;
+		let text = '';
+		const winningTeam = winningTeamName === params.team1 ? 1 : 2;
 
-		var radiantPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
-		var direPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
-		var radiantBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
-		var direBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
+		const radiantPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
+		const direPicks = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
+		const radiantBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
+		const direBans = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
 
 		if ( $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-side' ).text() === params.team1 ) {
 			team1Side = 'radiant';
@@ -138,9 +136,9 @@ $( function() {
 	}
 
 	function getHeroesData() {
-		var data = JSON.parse( mw.message( 'dota2webapi-heroes.json' ).plain() ).heroes,
+		const data = JSON.parse( mw.message( 'dota2webapi-heroes.json' ).plain() ).heroes,
 			heroes = { };
-		for ( var i = 0; i < data.length; ++i ) {
+		for ( let i = 0; i < data.length; ++i ) {
 			heroes[ data[ i ].id ] = data[ i ].localized_name.replace( '\'', '' );
 		}
 		return heroes;
@@ -148,7 +146,7 @@ $( function() {
 
 	function processMatchForBracketDetails( vars, i ) {
 		// jQuery variables
-		var $status = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
+		const $status = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
 			$radiantTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
 			$direTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
@@ -170,17 +168,17 @@ $( function() {
 			}
 		} )
 			.done( function( data ) {
-				var radiantPicks, direPicks,
+				let radiantPicks, direPicks,
 					radiantBans, direBans,
 					end = '';
 
 				if ( data.dota2dbapi.isresult ) {
-					var result = data.dota2dbapi.result;
+					const result = data.dota2dbapi.result;
 
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						radiantPicks = '';
-						var heroId;
-						for ( var j = 1; j <= 5; ++j ) {
+						let heroId;
+						for ( let j = 1; j <= 5; ++j ) {
 							radiantPicks += '|t{r}h' + j + '=';
 							if ( ( heroId = result.picks_bans.radiant[ 'pick_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -191,7 +189,7 @@ $( function() {
 						radiantPicks += '\n';
 
 						radiantBans = '';
-						for ( var j = 1; j <= 7; ++j ) {
+						for ( let j = 1; j <= 7; ++j ) {
 							radiantBans += '|t{r}b' + j + '=';
 							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -202,7 +200,7 @@ $( function() {
 						radiantBans += '\n';
 
 						direPicks = '';
-						for ( var j = 1; j <= 5; ++j ) {
+						for ( let j = 1; j <= 5; ++j ) {
 							direPicks += '|t{d}h' + j + '=';
 							if ( ( heroId = result.picks_bans.dire[ 'pick_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -213,7 +211,7 @@ $( function() {
 						direPicks += '\n';
 
 						direBans = '';
-						for ( var j = 1; j <= 7; ++j ) {
+						for ( let j = 1; j <= 7; ++j ) {
 							direBans += '|t{d}b' + j + '=';
 							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
 								if ( heroes[ heroId ] !== undefined ) {
@@ -275,20 +273,20 @@ $( function() {
 				if ( i < vars.matchIDs.length ) {
 					processMatchForBracketDetails( vars, i );
 				} else if ( vars.ok ) {
-					var h = mw.html,
+					const h = mw.html,
 						sortedTeams = [ ],
-						series = { },
-						$newTr,
+						series = { };
+					let $newTr,
 						$matchTr,
 						rowHtml = '';
 
-					for ( var j = 0; j < vars.teams.length; j++ ) {
-						var tmp = [ vars.teams[ j ].radiant, vars.teams[ j ].dire ];
+					for ( let j = 0; j < vars.teams.length; j++ ) {
+						const tmp = [ vars.teams[ j ].radiant, vars.teams[ j ].dire ];
 						sortedTeams.push( tmp.sort() );
 					}
 
-					for ( var j = 0; j < sortedTeams.length; j++ ) {
-						var team1 = sortedTeams[ j ][ 0 ],
+					for ( let j = 0; j < sortedTeams.length; j++ ) {
+						const team1 = sortedTeams[ j ][ 0 ],
 							team2 = sortedTeams[ j ][ 1 ];
 						if ( series[ team1 ] === undefined ) {
 							series[ team1 ] = { };
@@ -299,8 +297,8 @@ $( function() {
 						series[ team1 ][ team2 ].push( j );
 					}
 
-					for ( var team1 in series ) {
-						for ( var team2 in series[ team1 ] ) {
+					for ( const team1 in series ) {
+						for ( const team2 in series[ team1 ] ) {
 							$newTr = $( '<tr>' );
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
@@ -309,7 +307,7 @@ $( function() {
 								h.element( 'td', { colspan: 3, class: 'series-title' },
 									new h.Raw(
 										h.element( 'span', { class: 'team1' }, team1 ) +
-										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } ) +
+										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' }, '' ) +
 										h.element( 'span', { class: 'team2' }, team2 )
 									)
 								) +
@@ -318,7 +316,7 @@ $( function() {
 								.addClass( 'teams' );
 							$newTr.appendTo( $( '#insert-bracket-match-details-dialog .dota2webapi-result' ) );
 
-							for ( var k = series[ team1 ][ team2 ].length - 1; k >= 0; --k ) {
+							for ( let k = series[ team1 ][ team2 ].length - 1; k >= 0; --k ) {
 								$matchTr = $( '#insert-bracket-match-details-dialog tr.match-' + series[ team1 ][ team2 ][ k ] );
 								$matchTr.detach();
 								$newTr.after( $matchTr );
@@ -332,11 +330,9 @@ $( function() {
 
 	// Bracket
 	function insertBracketMatchDetails( context ) {
-		var selection,
-			matchIDs,
-			matchIDsPars = [ ],
-			vars, i = 0, match2 = false;
-		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
+		let i = 0, match2 = false;
+		const matchIDsPars = [ ];
+		const selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
 
 		if ( selection === '' ) {
 			/* eslint-disable-next-line no-alert */
@@ -344,10 +340,10 @@ $( function() {
 			return;
 		}
 
-		matchIDs = selection.split( /\r\n|\n| / );
+		const matchIDs = selection.split( /\r\n|\n| / );
 
 		for ( i = 0; i < matchIDs.length; i++ ) {
-			var matches = matchIDs[ i ].match( /\d{8,}/g );
+			const matches = matchIDs[ i ].match( /\d{8,}/g );
 			if ( matches !== null ) {
 				matchIDsPars.push( matches[ 0 ] );
 			}
@@ -361,15 +357,15 @@ $( function() {
 				if ( $( '#dota2db-dialog-match2-output' ).is( ':checked' ) ) {
 					match2 = true;
 				}
-				var wikitext, team1, team2,
+				let wikitext, team1, team2,
 					s, sStart = '', sMatchID = '', sEnd = ''; // , replaceText = '';
-				var $checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
+				let $checked = $( '#insert-bracket-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.length ) {
 					$checked = $checked.first();
 					wikitext = $checked.parent().siblings( '.match-data' ).text();
 					if ( $checked.attr( 'class' ) === 'series-radio' ) {
-						matches = wikitext.split( ',' );
-						var date = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' );
+						const matches = wikitext.split( ',' );
+						const date = $( '#insert-bracket-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' );
 
 						team1 = $checked.parent().siblings( '.series-title' ).find( '.team1' ).text();
 						team2 = $checked.parent().siblings( '.series-title' ).find( '.team2' ).text();
@@ -386,7 +382,7 @@ $( function() {
 						sStart += '\n';
 
 						for ( i = 0; i < matches.length; ++i ) {
-							var processedGame = processGameForBracketDetails( {
+							const processedGame = processGameForBracketDetails( {
 								team1: team1,
 								team2: team2,
 								matchIndex: i + 1,
@@ -410,7 +406,7 @@ $( function() {
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
 						team1 = $checked.parent().siblings( '.radiant-team' ).text();
 						team2 = $checked.parent().siblings( '.dire-team' ).text();
-						var processedGame = processGameForBracketDetails( {
+						const processedGame = processGameForBracketDetails( {
 							team1: team1,
 							team2: team2,
 							matchIndex: 1,
@@ -434,7 +430,7 @@ $( function() {
 			}
 		} );
 
-		vars = {
+		const vars = {
 			matchIDs: matchIDsPars,
 			ok: false,
 			teams: [ ]
@@ -444,44 +440,34 @@ $( function() {
 	}
 
 	function processGameForFullDetails( params ) {
-		var winningFaction = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
+		const winningFaction = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'winningFaction' ),
 			matchID = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'matchid' ),
-			winningTeamName = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text(),
-			winningTeam,
-			radiantScore, direScore,
-			radiantPicks, direPicks,
-			radiantBans, direBans,
-			radiantRoster, direRoster,
-			team1Score, team2Score,
-			team1Picks, team2Picks,
-			team1Bans, team2Bans,
-			team1Roster, team2Roster,
-			radiantSide,
-			text = '';
-		winningTeam = winningTeamName === params.team1 ? 1 : 2;
+			winningTeamName = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .' + winningFaction + '-side' ).text();
+		let text = '';
+		const winningTeam = winningTeamName === params.team1 ? 1 : 2;
 
-		radiantSide = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-team' ).text() === params.team1 ?
+		const radiantSide = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .radiant-team' ).text() === params.team1 ?
 			'left' : 'right';
 
-		radiantScore = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantScore' );
-		direScore = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direScore' );
-		team1Score = radiantSide === 'left' ? radiantScore : direScore;
-		team2Score = radiantSide === 'left' ? direScore : radiantScore;
+		const radiantScore = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantScore' );
+		const direScore = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direScore' );
+		const team1Score = radiantSide === 'left' ? radiantScore : direScore;
+		const team2Score = radiantSide === 'left' ? direScore : radiantScore;
 
-		radiantPicks = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
-		direPicks = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
-		team1Picks = radiantSide === 'left' ? radiantPicks : direPicks;
-		team2Picks = radiantSide === 'left' ? direPicks : radiantPicks;
+		const radiantPicks = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantPicks' );
+		const direPicks = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direPicks' );
+		const team1Picks = radiantSide === 'left' ? radiantPicks : direPicks;
+		const team2Picks = radiantSide === 'left' ? direPicks : radiantPicks;
 
-		radiantBans = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
-		direBans = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
-		team1Bans = radiantSide === 'left' ? radiantBans : direBans;
-		team2Bans = radiantSide === 'left' ? direBans : radiantBans;
+		const radiantBans = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantBans' );
+		const direBans = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direBans' );
+		const team1Bans = radiantSide === 'left' ? radiantBans : direBans;
+		const team2Bans = radiantSide === 'left' ? direBans : radiantBans;
 
-		radiantRoster = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantRoster' );
-		direRoster = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direRoster' );
-		team1Roster = radiantSide === 'left' ? radiantRoster : direRoster;
-		team2Roster = radiantSide === 'left' ? direRoster : radiantRoster;
+		const radiantRoster = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'radiantRoster' );
+		const direRoster = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'direRoster' );
+		const team1Roster = radiantSide === 'left' ? radiantRoster : direRoster;
+		const team2Roster = radiantSide === 'left' ? direRoster : radiantRoster;
 
 		text += '{{Match series game |radiant=' + radiantSide + '\n';
 		text += '|team1=' + params.team1 + ' |team1Kills=' + team1Score + '\n';
@@ -503,9 +489,9 @@ $( function() {
 	}
 
 	function getItemsData() {
-		var data = JSON.parse( mw.message( 'dota2webapi-items.json' ).plain() ).items,
-			itemName, items = { };
-		for ( var i = 0; i < data.length; ++i ) {
+		const data = JSON.parse( mw.message( 'dota2webapi-items.json' ).plain() ).items, items = { };
+		let itemName;
+		for ( let i = 0; i < data.length; ++i ) {
 			itemName = data[ i ].name.replace( '_', ' ' );
 			if ( itemName.indexOf( 'recipe' ) === 0 ) {
 				itemName = 'recipe';
@@ -529,7 +515,7 @@ $( function() {
 
 	function processMatchForFullDetails( vars, i ) {
 		// jQuery variables
-		var $status = $( '#insert-full-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
+		const $status = $( '#insert-full-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
 			$radiantTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
 			$direTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-full-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
@@ -552,14 +538,13 @@ $( function() {
 			}
 		} )
 			.done( function( data ) {
-				var radiantPicks, direPicks, radiantBans, direBans,
-					start = '{{Match series stats start\n',
-					middle = '{{Match series scoreboard header}}\n',
-					end = '';
+				let radiantPicks, direPicks, radiantBans, direBans, end = '',
+					start = '{{Match series stats start\n';
+				const middle = '{{Match series scoreboard header}}\n';
 
 				start += '|matchID=' + vars.matchIDs[ i ] + ' ';
 				if ( data.dota2dbapi.isresult ) {
-					var result = data.dota2dbapi.result;
+					const result = data.dota2dbapi.result;
 
 					start += '|VOD=';
 					start += '\n';
@@ -567,8 +552,8 @@ $( function() {
 					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
 						// radiantPicks = "{{MatchSeries/Picks";
 						radiantPicks = [ ];
-						var heroId;
-						for ( var j = 1; j <= 5; ++j ) {
+						let heroId;
+						for ( let j = 1; j <= 5; ++j ) {
 							if ( ( heroId = result.picks_bans.radiant[ 'pick_' + j ] ) !== null ) {
 								radiantPicks.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
@@ -579,7 +564,7 @@ $( function() {
 
 						// direPicks = "{{MatchSeries/Picks";
 						direPicks = [ ];
-						for ( var j = 1; j <= 5; ++j ) {
+						for ( let j = 1; j <= 5; ++j ) {
 							if ( ( heroId = result.picks_bans.dire[ 'pick_' + j ] ) !== null ) {
 								direPicks.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
@@ -590,7 +575,7 @@ $( function() {
 
 						// radiantBans = "{{MatchSeries/Bans";
 						radiantBans = [ ];
-						for ( var j = 1; j <= 7; ++j ) {
+						for ( let j = 1; j <= 7; ++j ) {
 							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
 								radiantBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
@@ -601,7 +586,7 @@ $( function() {
 
 						// direBans = "{{MatchSeries/Bans";
 						direBans = [ ];
-						for ( var j = 1; j <= 7; ++j ) {
+						for ( let j = 1; j <= 7; ++j ) {
 							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
 								direBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
 							} else {
@@ -619,12 +604,12 @@ $( function() {
 					// start += '|radiantKills=' + result.kills.radiant + ' ';
 					// start += '|direKills=' + result.kills.dire + '\n';
 
-					var factions = { R: 'radiant', D: 'dire' };
-					var factionRosters = { radiant: '', dire: '' };
-					for ( var t in factions ) {
-						var factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result.kills[ factions[ t ] ] + '}}\n';
-						for ( var j = 1; j <= 5; ++j ) {
-							var player = result.players[ factions[ t ] ][ 'player_' + j ];
+					const factions = { R: 'radiant', D: 'dire' };
+					const factionRosters = { radiant: '', dire: '' };
+					for ( const t in factions ) {
+						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result.kills[ factions[ t ] ] + '}}\n';
+						for ( let j = 1; j <= 5; ++j ) {
+							const player = result.players[ factions[ t ] ][ 'player_' + j ];
 							factionRoster += '{{Match series player|player=';
 							factionRoster += player.name + ' ';
 							factionRoster += '|hero=' + ( heroes[ player.hero ] !== undefined ? heroes[ player.hero ].toLowerCase() : '' ) + ' ';
@@ -637,7 +622,7 @@ $( function() {
 							factionRoster += '|gpm=' + player.gold_per_min;
 							factionRoster += '|xpm=' + player.xp_per_min;
 							factionRoster += '|items=';
-							for ( var k = 1; k <= 6; ++k ) {
+							for ( let k = 1; k <= 6; ++k ) {
 								if ( items[ player[ 'item_' + k ] ] !== undefined ) {
 									factionRoster += items[ player[ 'item_' + k ] ];
 								}
@@ -647,7 +632,7 @@ $( function() {
 							}
 							if ( player.hero === 'Lone Druid' ) {
 								factionRoster += '|bearitems=';
-								for ( var k = 1; k <= 6; ++k ) {
+								for ( let k = 1; k <= 6; ++k ) {
 									if ( items[ player[ 'bearitem_' + k ] ] !== undefined ) {
 										factionRoster += items[ player[ 'bearitem_' + k ] ];
 									}
@@ -708,20 +693,20 @@ $( function() {
 				if ( i < vars.matchIDs.length ) {
 					processMatchForFullDetails( vars, i );
 				} else if ( vars.ok ) {
-					var h = mw.html,
+					const h = mw.html,
 						sortedTeams = [ ],
-						series = { },
-						$newTr,
+						series = { };
+					let $newTr,
 						$matchTr,
 						rowHtml = '';
 
-					for ( var j = 0; j < vars.teams.length; j++ ) {
-						var tmp = [ vars.teams[ j ].radiant, vars.teams[ j ].dire ];
+					for ( let j = 0; j < vars.teams.length; j++ ) {
+						const tmp = [ vars.teams[ j ].radiant, vars.teams[ j ].dire ];
 						sortedTeams.push( tmp.sort() );
 					}
 
-					for ( var j = 0; j < sortedTeams.length; j++ ) {
-						var team1 = sortedTeams[ j ][ 0 ],
+					for ( let j = 0; j < sortedTeams.length; j++ ) {
+						const team1 = sortedTeams[ j ][ 0 ],
 							team2 = sortedTeams[ j ][ 1 ];
 						if ( series[ team1 ] === undefined ) {
 							series[ team1 ] = { };
@@ -732,8 +717,8 @@ $( function() {
 						series[ team1 ][ team2 ].push( j );
 					}
 
-					for ( var team1 in series ) {
-						for ( var team2 in series[ team1 ] ) {
+					for ( const team1 in series ) {
+						for ( const team2 in series[ team1 ] ) {
 							$newTr = $( '<tr>' );
 							rowHtml = h.element( 'td', { class: 'insert-selection' },
 								new h.Raw( h.element( 'input', { type: 'radio', name: 'insert-selection', class: 'series-radio' } ) )
@@ -742,7 +727,7 @@ $( function() {
 								h.element( 'td', { colspan: 3, class: 'series-title' },
 									new h.Raw(
 										h.element( 'span', { class: 'team1' }, team1 ) +
-										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' } ) +
+										h.element( 'div', { class: 'switch-teams', title: 'Switch team 1 / team 2' }, '' ) +
 										h.element( 'span', { class: 'team2' }, team2 )
 									)
 								) +
@@ -751,7 +736,7 @@ $( function() {
 								.addClass( 'teams' );
 							$newTr.appendTo( $( '#insert-full-match-details-dialog .dota2webapi-result' ) );
 
-							for ( var j = series[ team1 ][ team2 ].length - 1; j >= 0; --j ) {
+							for ( let j = series[ team1 ][ team2 ].length - 1; j >= 0; --j ) {
 								$matchTr = $( '#insert-full-match-details-dialog tr.match-' + series[ team1 ][ team2 ][ j ] );
 								$matchTr.detach();
 								$newTr.after( $matchTr );
@@ -764,11 +749,8 @@ $( function() {
 	}
 
 	function insertFullMatchDetails( context ) {
-		var selection,
-			matchIDs,
-			matchIDsPars = [ ],
-			vars, i = 0;
-		selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' );
+		const selection = context.$textarea.textSelection( 'getSelection' ).replace( /\s+$/, '' ).replace( /^\s+/, '' ),
+			matchIDsPars = [ ];
 
 		if ( selection === '' ) {
 			/* eslint-disable-next-line no-alert */
@@ -776,10 +758,10 @@ $( function() {
 			return;
 		}
 
-		matchIDs = selection.split( /\r\n|\n| / );
+		const matchIDs = selection.split( /\r\n|\n| / );
 
-		for ( i = 0; i < matchIDs.length; i++ ) {
-			var matches = matchIDs[ i ].match( /\d{8,}/g );
+		for ( let i = 0; i < matchIDs.length; i++ ) {
+			const matches = matchIDs[ i ].match( /\d{8,}/g );
 			if ( matches !== null ) {
 				matchIDsPars.push( matches[ 0 ] );
 			}
@@ -790,22 +772,22 @@ $( function() {
 			title: 'Insert full match details',
 			id: 'insert-full-match-details-dialog',
 			insertCallback: function() {
-				var wikitext, team1, team2,
+				let wikitext, team1, team2,
 					s, sStart = '', sEnd = ''; // , replaceText = '';
-				var $checked = $( '#insert-full-match-details-dialog input[name="insert-selection"]:checked' );
+				let $checked = $( '#insert-full-match-details-dialog input[name="insert-selection"]:checked' );
 				if ( $checked.length ) {
 					$checked = $checked.first();
 					wikitext = $checked.parent().siblings( '.match-data' ).text();
 					if ( $checked.attr( 'class' ) === 'series-radio' ) {
-						matches = wikitext.split( ',' );
-						var date = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' ),
-							team1Score = 0, team2Score = 0;
+						const matches = wikitext.split( ',' );
+						const date = $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + matches[ 0 ] + ' .match-data' ).data( 'startTime' );
+						let team1Score = 0, team2Score = 0;
 
 						team1 = $checked.parent().siblings( '.series-title' ).find( '.team1' ).text();
 						team2 = $checked.parent().siblings( '.series-title' ).find( '.team2' ).text();
 
-						for ( i = 0; i < matches.length; ++i ) {
-							var processedGame = processGameForFullDetails( {
+						for ( let i = 0; i < matches.length; ++i ) {
+							const processedGame = processGameForFullDetails( {
 								team1: team1,
 								team2: team2,
 								matchIndex: i + 1,
@@ -834,7 +816,7 @@ $( function() {
 					} else if ( $checked.attr( 'class' ) === 'match-radio' ) {
 						team1 = $checked.parent().siblings( '.radiant-team' ).text();
 						team2 = $checked.parent().siblings( '.dire-team' ).text();
-						var processedGame = processGameForFullDetails( {
+						const processedGame = processGameForFullDetails( {
 							team1: team1,
 							team2: team2,
 							matchIndex: 1,
@@ -858,7 +840,7 @@ $( function() {
 			}
 		} );
 
-		vars = {
+		const vars = {
 			matchIDs: matchIDsPars,
 			ok: false,
 			teams: [ ]
@@ -935,14 +917,14 @@ $( function() {
 	}
 
 	$( document ).on( 'click', '.dota2webapi-result .series-title .switch-teams', function() {
-		var team1 = $( this ).siblings( '.team1' ).text(),
+		const team1 = $( this ).siblings( '.team1' ).text(),
 			team2 = $( this ).siblings( '.team2' ).text();
 		$( this ).siblings( '.team1' ).text( team2 );
 		$( this ).siblings( '.team2' ).text( team1 );
 	} );
 
 	$( document ).on( 'click', '.dota2webapi-result .match-row .switch-teams', function() {
-		var team1 = $( this ).siblings( '.radiant-team' ).text(),
+		const team1 = $( this ).siblings( '.radiant-team' ).text(),
 			team2 = $( this ).siblings( '.dire-team' ).text();
 		$( this ).siblings( '.radiant-team' ).text( team2 );
 		$( this ).siblings( '.dire-team' ).text( team1 );

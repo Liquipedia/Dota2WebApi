@@ -64,7 +64,7 @@
 
 .dota2webapi-result .status.loading {
 	/* @embed */
-	background-image: url( images/loading.gif );
+	background-image: url( ../images/loading.gif );
 	background-position: left center;
 	background-repeat: no-repeat;
 	padding-left: 20px;
@@ -78,7 +78,7 @@
 .dota2webapi-result .series-title .switch-teams {
 	display: inline-block;
 	/* @embed */
-	background-image: url( images/swap-14.png );
+	background-image: url( ../images/swap-14.png );
 	background-repeat: no-repeat;
 	width: 14px;
 	height: 14px;
@@ -89,7 +89,7 @@
 
 .dota2webapi-result .match-row .switch-teams {
 	/* @embed */
-	background-image: url( images/swap-14.png );
+	background-image: url( ../images/swap-14.png );
 	background-repeat: no-repeat;
 	background-position: center;
 	width: 30px;
