@@ -1,4 +1,4 @@
-$( function() {
+$( () => {
 	function sortNumber( a, b ) {
 		return a - b;
 	}
@@ -55,7 +55,7 @@ $( function() {
 	}
 
 	function addInsertDialog( matchIDs, configuration ) {
-		$.extend( configuration, {
+		Object.assign( configuration, {
 			width: '700px',
 			modal: true,
 			buttons: [
@@ -156,7 +156,7 @@ $( function() {
 				format: 'json'
 			}
 		} )
-			.done( function( data ) {
+			.done( ( data ) => {
 				let radiantPicks, direPicks,
 					radiantBans, direBans,
 					end = '';
@@ -167,14 +167,14 @@ $( function() {
 					if ( Object.keys( result.heroVeto ).length !== 0 ) {
 						radiantPicks = '';
 						for ( let j = 0; j < 5; ++j ) {
-							radiantPicks += `|t{r}h${j + 1}=`;
+							radiantPicks += `|t{r}h${ j + 1 }=`;
 							radiantPicks += result.heroVeto.radiant.picks[ j ].hero.toLowerCase();
 						}
 						radiantPicks += '\n';
 
 						radiantBans = '';
 						for ( let j = 0; j < 7; ++j ) {
-							radiantBans += `|t{r}b${j + 1}=`;
+							radiantBans += `|t{r}b${ j + 1 }=`;
 							radiantBans += result.heroVeto.radiant.bans[ j ].hero.toLowerCase();
 
 						}
@@ -182,14 +182,14 @@ $( function() {
 
 						direPicks = '';
 						for ( let j = 0; j < 5; ++j ) {
-							direPicks += `|t{d}h${j + 1}=`;
+							direPicks += `|t{d}h${ j + 1 }=`;
 							direPicks += result.heroVeto.dire.picks[ j ].hero.toLowerCase();
 						}
 						direPicks += '\n';
 
 						direBans = '';
 						for ( let j = 0; j < 7; ++j ) {
-							direBans += `|t{d}b${j + 1}=`;
+							direBans += `|t{d}b${ j + 1 }=`;
 							direBans += result.heroVeto.dire.bans[ j ].hero.toLowerCase();
 						}
 						direBans += '\n';
@@ -236,10 +236,10 @@ $( function() {
 
 				$status.removeClass( 'loading' );
 			} )
-			.fail( function( error ) {
+			.fail( ( error ) => {
 				$status.text( error );
 			} )
-			.always( function() {
+			.always( () => {
 				++i;
 
 				if ( i < vars.matchIDs.length ) {
@@ -481,7 +481,7 @@ $( function() {
 				format: 'json'
 			}
 		} )
-			.done( function( data ) {
+			.done( ( data ) => {
 				let radiantPicks, direPicks, radiantBans, direBans, end = '',
 					start = '{{Match series stats start\n';
 				const middle = '{{Match series scoreboard header}}\n';
@@ -572,10 +572,10 @@ $( function() {
 
 				$status.removeClass( 'loading' );
 			} )
-			.fail( function( error ) {
+			.fail( ( error ) => {
 				$status.text( error );
 			} )
-			.always( function() {
+			.always( () => {
 				++i;
 
 				if ( i < vars.matchIDs.length ) {
@@ -792,10 +792,10 @@ $( function() {
 	 * modules are available. Then, customize the toolbar...
 	 */
 	if ( [ 'edit', 'submit' ].indexOf( mw.config.get( 'wgAction' ) ) !== -1 ) {
-		mw.loader.using( 'user.options', function() {
+		mw.loader.using( 'user.options', () => {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
-				mw.loader.using( 'ext.wikiEditor', function() {
-					$( function() {
+				mw.loader.using( 'ext.wikiEditor', () => {
+					$( () => {
 						addToToolbarInsertBracketMatchDetails();
 						addToToolbarInsertFullMatchDetails();
 					} );
