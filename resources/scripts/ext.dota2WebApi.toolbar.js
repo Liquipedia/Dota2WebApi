@@ -149,6 +149,7 @@ $( () => {
 		$.ajax( {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
+			type: 'POST',
 			data: {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
@@ -474,6 +475,7 @@ $( () => {
 		$.ajax( {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
+			type: 'POST',
 			data: {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
