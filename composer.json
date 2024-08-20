@@ -1,14 +1,39 @@
 {
 	"require-dev": {
 		"mediawiki/mediawiki-codesniffer": "*",
+		"mediawiki/minus-x": "*",
 		"php-parallel-lint/php-parallel-lint": "*",
 		"php-parallel-lint/php-console-highlighter": "*"
 	},
 	"scripts": {
-		"test": [
-			"parallel-lint --colors --exclude vendor .",
+		"lint": [
+			"parallel-lint --colors --exclude vendor ."
+		],
+		"phpcs": [
 			"phpcs -p -s"
 		],
-		"fix": "phpcbf"
+		"minus-x": [
+			"minus-x check ."
+		],
+		"test": [
+			"composer minus-x",
+			"composer lint",
+			"composer phpcs"
+		],
+		"fix": [
+			"minus-x fix .",
+			"phpcbf"
+		],
+		"phpcs-junit": [
+			"phpcs --report=junit > report-phpcs.xml"
+		],
+		"reports-junit": [
+			"composer phpcs-junit"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

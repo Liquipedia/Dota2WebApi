@@ -1,4 +1,4 @@
-$( function() {
+$( () => {
 	function sortNumber( a, b ) {
 		return a - b;
 	}
@@ -55,7 +55,7 @@ $( function() {
 	}
 
 	function addInsertDialog( matchIDs, configuration ) {
-		$.extend( configuration, {
+		Object.assign( configuration, {
 			width: '700px',
 			modal: true,
 			buttons: [
@@ -135,89 +135,70 @@ $( function() {
 		return { winningTeam: winningTeam, matchID: matchID, text: text };
 	}
 
-	function getHeroesData() {
-		const data = JSON.parse( mw.message( 'dota2webapi-heroes.json' ).plain() ).heroes,
-			heroes = { };
-		for ( let i = 0; i < data.length; ++i ) {
-			heroes[ data[ i ].id ] = data[ i ].localized_name.replace( '\'', '' );
-		}
-		return heroes;
-	}
-
 	function processMatchForBracketDetails( vars, i ) {
 		// jQuery variables
 		const $status = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
 			$radiantTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
 			$direTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
-			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
-			heroes = getHeroesData();
+			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' );
 		$matchData.data( 'matchid', vars.matchIDs[ i ] );
-
 		$status.text( 'In progress...' )
 			.addClass( 'loading' );
 
 		$.ajax( {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
+			type: 'POST',
 			data: {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
-				data: 'picks_bans|duration|radiant_win|teams|start_time',
 				pagename: mw.config.get( 'wgPageName' ),
 				format: 'json'
 			}
 		} )
-			.done( function( data ) {
+			.done( ( data ) => {
 				let radiantPicks, direPicks,
 					radiantBans, direBans,
 					end = '';
 
-				if ( data.dota2dbapi.isresult ) {
-					const result = data.dota2dbapi.result;
-
-					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
+				if ( data.dota2dbapi.error === undefined ) {
+					const result = data.dota2dbapi;
+					let radiant = 'team1';
+					let dire = 'team2';
+					if ( result.team1.side === 'dire' ) {
+						dire = 'team1';
+						radiant = 'team2';
+					}
+					const teamDire = result[ dire ].name;
+					const teamRadiant = result[ radiant ].name;
+					if ( Object.keys( result.heroVeto ).length !== 0 ) {
 						radiantPicks = '';
-						let heroId;
-						for ( let j = 1; j <= 5; ++j ) {
-							radiantPicks += '|t{r}h' + j + '=';
-							if ( ( heroId = result.picks_bans.radiant[ 'pick_' + j ] ) !== null ) {
-								if ( heroes[ heroId ] !== undefined ) {
-									radiantPicks += heroes[ heroId ].toLowerCase();
-								}
-							}
+						for ( let j = 0; j < 5; ++j ) {
+							radiantPicks += `|t{r}h${ j + 1 }=`;
+							// eslint-disable-next-line max-len
+							radiantPicks += result.heroVeto[ radiant ].picks[ j ].hero.toLowerCase();
 						}
 						radiantPicks += '\n';
 
 						radiantBans = '';
-						for ( let j = 1; j <= 7; ++j ) {
-							radiantBans += '|t{r}b' + j + '=';
-							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
-								if ( heroes[ heroId ] !== undefined ) {
-									radiantBans += heroes[ heroId ].toLowerCase();
-								}
-							}
+						for ( let j = 0; j < 7; ++j ) {
+							radiantBans += `|t{r}b${ j + 1 }=`;
+							radiantBans += result.heroVeto[ radiant ].bans[ j ].hero.toLowerCase();
+
 						}
 						radiantBans += '\n';
 
 						direPicks = '';
-						for ( let j = 1; j <= 5; ++j ) {
-							direPicks += '|t{d}h' + j + '=';
-							if ( ( heroId = result.picks_bans.dire[ 'pick_' + j ] ) !== null ) {
-								if ( heroes[ heroId ] !== undefined ) {
-									direPicks += heroes[ heroId ].toLowerCase();
-								}
-							}
+						for ( let j = 0; j < 5; ++j ) {
+							direPicks += `|t{d}h${ j + 1 }=`;
+							direPicks += result.heroVeto[ dire ].picks[ j ].hero.toLowerCase();
 						}
 						direPicks += '\n';
 
 						direBans = '';
-						for ( let j = 1; j <= 7; ++j ) {
-							direBans += '|t{d}b' + j + '=';
-							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
-								if ( heroes[ heroId ] !== undefined ) {
-									direBans += heroes[ heroId ].toLowerCase();
-								}
-							}
+						for ( let j = 0; j < 7; ++j ) {
+							direBans += `|t{d}b${ j + 1 }=`;
+							direBans += result.heroVeto[ dire ].bans[ j ].hero.toLowerCase();
 						}
 						direBans += '\n';
 					} else {
@@ -228,46 +209,45 @@ $( function() {
 					}
 
 					end += '|length=';
-					end += result.duration;
+					end += result.length;
 					end += ' ';
 					end += '|win={w}';
 					end += '\n';
 					end += '}}\n';
-
 					vars.ok = true;
 					vars.teams.push( {
-						radiant: result.teams.radiant,
-						dire: result.teams.dire
+						radiant: teamRadiant,
+						dire: teamDire
 					} );
 
-					$radiantTeam.text( result.teams.radiant );
-					$direTeam.text( result.teams.dire );
+					$radiantTeam.text( teamRadiant );
+					$direTeam.text( teamDire );
 					$radiantTeam.addClass( 'radiant-side' );
 					$direTeam.addClass( 'dire-side' );
-					if ( result.radiant_win !== undefined ) {
+					if ( result.winner === 1 ) {
 						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'radiant' );
+						$matchData.data( 'winningFaction', result.team1.side );
 					} else {
 						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'dire' );
+						$matchData.data( 'winningFaction', result.team2.side );
 					}
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
 					$matchData.data( 'radiantBans', radiantBans );
 					$matchData.data( 'direBans', direBans );
-					$matchData.data( 'startTime', result.start_time );
+					$matchData.data( 'startTime', result.startTime );
 					$matchData.data( 'wikitextEnd', end );
 					$status.text( 'Success' );
 				} else {
-					$status.text( data.dota2dbapi.result.error );
+					$status.text( data.dota2dbapi.error );
 				}
 
 				$status.removeClass( 'loading' );
 			} )
-			.fail( function( error ) {
+			.fail( ( error ) => {
 				$status.text( error );
 			} )
-			.always( function() {
+			.always( () => {
 				++i;
 
 				if ( i < vars.matchIDs.length ) {
@@ -475,10 +455,10 @@ $( function() {
 		text += '|winner=' + winningTeam + '}}\n';
 
 		text += $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'wikitextStart' );
-		text += '|team1Picks=' + team1Picks.join( ',' ) + '\n';
-		text += '|team2Picks=' + team2Picks.join( ',' ) + '\n';
-		text += '|team1Bans=' + team1Bans.join( ',' ) + '\n';
-		text += '|team2Bans=' + team2Bans.join( ',' ) + '\n';
+		text += '|team1Picks=' + team1Picks.map( ( hero ) => hero.hero ).join( ',' ) + '\n';
+		text += '|team2Picks=' + team2Picks.map( ( hero ) => hero.hero ).join( ',' ) + '\n';
+		text += '|team1Bans=' + team1Bans.map( ( hero ) => hero.hero ).join( ',' ) + '\n';
+		text += '|team2Bans=' + team2Bans.map( ( hero ) => hero.hero ).join( ',' ) + '\n';
 		text += '}}\n';
 		text += $( '#insert-full-match-details-dialog .dota2webapi-result .match-' + params.row + ' .match-data' ).data( 'wikitextMiddle' );
 		text += team1Roster;
@@ -488,39 +468,12 @@ $( function() {
 		return { winningTeam: winningTeam, matchID: matchID, text: text };
 	}
 
-	function getItemsData() {
-		const data = JSON.parse( mw.message( 'dota2webapi-items.json' ).plain() ).items, items = { };
-		let itemName;
-		for ( let i = 0; i < data.length; ++i ) {
-			itemName = data[ i ].name.replace( '_', ' ' );
-			if ( itemName.indexOf( 'recipe' ) === 0 ) {
-				itemName = 'recipe';
-			}
-			items[ data[ i ].id ] = itemName;
-		}
-
-		items[ 18 ] = 'band of elvenskin';
-		items[ 26 ] = 'morbid mask';
-		items[ 106 ] = 'necro1';
-		items[ 141 ] = 'daedalus';
-		items[ 149 ] = 'crystalys';
-		items[ 152 ] = 'shadow blade';
-		items[ 185 ] = 'drums';
-		items[ 193 ] = 'necro2';
-		items[ 194 ] = 'necro3';
-		items[ 196 ] = 'diffusal2';
-
-		return items;
-	}
-
 	function processMatchForFullDetails( vars, i ) {
 		// jQuery variables
 		const $status = $( '#insert-full-match-details-dialog .dota2webapi-result td.status:eq(' + i + ')' ),
 			$radiantTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.radiant-team:eq(' + i + ')' ),
 			$direTeam = $( '#insert-full-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
-			$matchData = $( '#insert-full-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' ),
-			heroes = getHeroesData(),
-			items = getItemsData();
+			$matchData = $( '#insert-full-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' );
 		$matchData.data( 'matchid', vars.matchIDs[ i ] );
 
 		$status.text( 'In progress...' )
@@ -529,165 +482,102 @@ $( function() {
 		$.ajax( {
 			url: mw.util.wikiScript( 'api' ),
 			dataType: 'json',
+			type: 'POST',
 			data: {
 				action: 'dota2dbapi',
 				matchid: vars.matchIDs[ i ],
-				data: 'picks_bans|kills_deaths|players|radiant_win|teams|start_time',
 				pagename: mw.config.get( 'wgPageName' ),
 				format: 'json'
 			}
 		} )
-			.done( function( data ) {
+			.done( ( data ) => {
 				let radiantPicks, direPicks, radiantBans, direBans, end = '',
 					start = '{{Match series stats start\n';
 				const middle = '{{Match series scoreboard header}}\n';
 
 				start += '|matchID=' + vars.matchIDs[ i ] + ' ';
-				if ( data.dota2dbapi.isresult ) {
-					const result = data.dota2dbapi.result;
-
+				if ( data.dota2dbapi.error === undefined ) {
+					const result = data.dota2dbapi;
+					let radiant = 'team1';
+					let dire = 'team2';
+					if ( result.team1.side === 'dire' ) {
+						dire = 'team1';
+						radiant = 'team2';
+					}
+					const teamDire = result[ dire ].name;
+					const teamRadiant = result[ radiant ].name;
 					start += '|VOD=';
 					start += '\n';
-
-					if ( result.picks_bans.radiant.pick_1 !== undefined ) {
-						// radiantPicks = "{{MatchSeries/Picks";
-						radiantPicks = [ ];
-						let heroId;
-						for ( let j = 1; j <= 5; ++j ) {
-							if ( ( heroId = result.picks_bans.radiant[ 'pick_' + j ] ) !== null ) {
-								radiantPicks.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
-							} else {
-								radiantPicks.push( '' );
-							}
-						}
-						// radiantPicks += "}}\n";
-
-						// direPicks = "{{MatchSeries/Picks";
-						direPicks = [ ];
-						for ( let j = 1; j <= 5; ++j ) {
-							if ( ( heroId = result.picks_bans.dire[ 'pick_' + j ] ) !== null ) {
-								direPicks.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
-							} else {
-								direPicks.push( '' );
-							}
-						}
-						// direPicks += "}}\n";
-
-						// radiantBans = "{{MatchSeries/Bans";
-						radiantBans = [ ];
-						for ( let j = 1; j <= 7; ++j ) {
-							if ( ( heroId = result.picks_bans.radiant[ 'ban_' + j ] ) !== null ) {
-								radiantBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
-							} else {
-								radiantBans.push( '' );
-							}
-						}
-						// radiantBans += "}}\n";
-
-						// direBans = "{{MatchSeries/Bans";
-						direBans = [ ];
-						for ( let j = 1; j <= 7; ++j ) {
-							if ( ( heroId = result.picks_bans.dire[ 'ban_' + j ] ) !== null ) {
-								direBans.push( heroes[ heroId ] !== undefined ? heroes[ heroId ].toLowerCase() : '' );
-							} else {
-								direBans.push( '' );
-							}
-						}
-						// direBans += "}}\n";
-					} else {
-						radiantPicks = [ '', '', '', '', '' ];
-						direPicks = [ '', '', '', '', '' ];
-						radiantBans = [ '', '', '', '', '', '' ];
-						direBans = [ '', '', '', '', '', '' ];
-					}
-
-					// start += '|radiantKills=' + result.kills.radiant + ' ';
-					// start += '|direKills=' + result.kills.dire + '\n';
-
+					radiantPicks = result.heroVeto[ radiant ].picks;
+					direPicks = result.heroVeto[ dire ].picks;
+					radiantBans = result.heroVeto[ radiant ].bans;
+					direBans = result.heroVeto[ dire ].bans;
 					const factions = { R: 'radiant', D: 'dire' };
 					const factionRosters = { radiant: '', dire: '' };
 					for ( const t in factions ) {
-						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result.kills[ factions[ t ] ] + '}}\n';
-						for ( let j = 1; j <= 5; ++j ) {
-							const player = result.players[ factions[ t ] ][ 'player_' + j ];
+						const getTeam = ( factionKey ) => factionKey === 'R' ? radiant : dire;
+						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result[ getTeam( t ) + 'Score' ] + '}}\n';
+						for ( let j = 0; j < 5; ++j ) {
+							const player = result[ getTeam( t ) ].players[ j ];
 							factionRoster += '{{Match series player|player=';
 							factionRoster += player.name + ' ';
-							factionRoster += '|hero=' + ( heroes[ player.hero ] !== undefined ? heroes[ player.hero ].toLowerCase() : '' ) + ' ';
+							factionRoster += '|hero=' + player.heroName + ' ';
 							factionRoster += '|lvl=' + player.level;
 							factionRoster += '|k=' + player.kills;
 							factionRoster += '|d=' + player.deaths;
 							factionRoster += '|a=' + player.assists;
-							factionRoster += '|lh=' + player.last_hits;
+							factionRoster += '|lh=' + player.lastHits;
 							factionRoster += '|den=' + player.denies;
-							factionRoster += '|gpm=' + player.gold_per_min;
-							factionRoster += '|xpm=' + player.xp_per_min;
-							factionRoster += '|items=';
-							for ( let k = 1; k <= 6; ++k ) {
-								if ( items[ player[ 'item_' + k ] ] !== undefined ) {
-									factionRoster += items[ player[ 'item_' + k ] ];
-								}
-								if ( k < 6 ) {
-									factionRoster += ',';
-								}
-							}
-							if ( player.hero === 'Lone Druid' ) {
-								factionRoster += '|bearitems=';
-								for ( let k = 1; k <= 6; ++k ) {
-									if ( items[ player[ 'bearitem_' + k ] ] !== undefined ) {
-										factionRoster += items[ player[ 'bearitem_' + k ] ];
-									}
-									if ( k < 6 ) {
-										factionRoster += ',';
-									}
-								}
-							}
+							factionRoster += '|gpm=' + player.goldPerMinute;
+							factionRoster += '|xpm=' + player.xpPerMinute;
+							factionRoster += '|items=' + player.items.join( ',' );
+							// @TODO LONE DRUID BEAR ITEMS
 							factionRoster += '}}\n';
 						}
 						factionRosters[ factions[ t ] ] = factionRoster;
 					}
-
 					end += '{{Match series stats end}}\n';
 
 					vars.ok = true;
 					vars.teams.push( {
-						radiant: result.teams.radiant,
-						dire: result.teams.dire
+						radiant: teamRadiant,
+						dire: teamDire
 					} );
 
-					$radiantTeam.text( result.teams.radiant );
-					$direTeam.text( result.teams.dire );
+					$radiantTeam.text( teamRadiant );
+					$direTeam.text( teamDire );
 					$radiantTeam.addClass( 'radiant-side' );
 					$direTeam.addClass( 'dire-side' );
-					if ( result.radiant_win !== undefined ) {
+					if ( result.winner === 1 ) {
 						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'radiant' );
+						$matchData.data( 'winningFaction', result.team1.side );
 					} else {
 						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'dire' );
+						$matchData.data( 'winningFaction', result.team2.side );
 					}
-					$matchData.data( 'radiantScore', result.deaths.dire );
-					$matchData.data( 'direScore', result.deaths.radiant );
+					$matchData.data( 'radiantScore', result[ radiant + 'Score' ] );
+					$matchData.data( 'direScore', result[ dire + 'Score' ] );
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
 					$matchData.data( 'radiantBans', radiantBans );
 					$matchData.data( 'direBans', direBans );
 					$matchData.data( 'radiantRoster', factionRosters.radiant );
 					$matchData.data( 'direRoster', factionRosters.dire );
-					$matchData.data( 'startTime', result.start_time );
+					$matchData.data( 'startTime', result.startTime );
 					$matchData.data( 'wikitextStart', start );
 					$matchData.data( 'wikitextMiddle', middle );
 					$matchData.data( 'wikitextEnd', end );
 					$status.text( 'Success' );
 				} else {
-					$status.text( data.dota2dbapi.result.error );
+					$status.text( data.dota2dbapi.error );
 				}
 
 				$status.removeClass( 'loading' );
 			} )
-			.fail( function( error ) {
+			.fail( ( error ) => {
 				$status.text( error );
 			} )
-			.always( function() {
+			.always( () => {
 				++i;
 
 				if ( i < vars.matchIDs.length ) {
@@ -904,10 +794,10 @@ $( function() {
 	 * modules are available. Then, customize the toolbar...
 	 */
 	if ( [ 'edit', 'submit' ].indexOf( mw.config.get( 'wgAction' ) ) !== -1 ) {
-		mw.loader.using( 'user.options', function() {
+		mw.loader.using( 'user.options', () => {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
-				mw.loader.using( 'ext.wikiEditor', function() {
-					$( function() {
+				mw.loader.using( 'ext.wikiEditor', () => {
+					$( () => {
 						addToToolbarInsertBracketMatchDetails();
 						addToToolbarInsertFullMatchDetails();
 					} );
