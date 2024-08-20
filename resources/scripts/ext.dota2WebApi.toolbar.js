@@ -142,7 +142,6 @@ $( () => {
 			$direTeam = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.dire-team:eq(' + i + ')' ),
 			$matchData = $( '#insert-bracket-match-details-dialog .dota2webapi-result td.match-data:eq(' + i + ')' );
 		$matchData.data( 'matchid', vars.matchIDs[ i ] );
-
 		$status.text( 'In progress...' )
 			.addClass( 'loading' );
 
@@ -164,19 +163,27 @@ $( () => {
 
 				if ( data.dota2dbapi.error === undefined ) {
 					const result = data.dota2dbapi;
-
+					let radiant = 'team1';
+					let dire = 'team2';
+					if ( result.team1.side === 'dire' ) {
+						dire = 'team1';
+						radiant = 'team2';
+					}
+					const teamDire = result[ dire ].name;
+					const teamRadiant = result[ radiant ].name;
 					if ( Object.keys( result.heroVeto ).length !== 0 ) {
 						radiantPicks = '';
 						for ( let j = 0; j < 5; ++j ) {
 							radiantPicks += `|t{r}h${ j + 1 }=`;
-							radiantPicks += result.heroVeto.radiant.picks[ j ].hero.toLowerCase();
+							// eslint-disable-next-line max-len
+							radiantPicks += result.heroVeto[ radiant ].picks[ j ].hero.toLowerCase();
 						}
 						radiantPicks += '\n';
 
 						radiantBans = '';
 						for ( let j = 0; j < 7; ++j ) {
 							radiantBans += `|t{r}b${ j + 1 }=`;
-							radiantBans += result.heroVeto.radiant.bans[ j ].hero.toLowerCase();
+							radiantBans += result.heroVeto[ radiant ].bans[ j ].hero.toLowerCase();
 
 						}
 						radiantBans += '\n';
@@ -184,14 +191,14 @@ $( () => {
 						direPicks = '';
 						for ( let j = 0; j < 5; ++j ) {
 							direPicks += `|t{d}h${ j + 1 }=`;
-							direPicks += result.heroVeto.dire.picks[ j ].hero.toLowerCase();
+							direPicks += result.heroVeto[ dire ].picks[ j ].hero.toLowerCase();
 						}
 						direPicks += '\n';
 
 						direBans = '';
 						for ( let j = 0; j < 7; ++j ) {
 							direBans += `|t{d}b${ j + 1 }=`;
-							direBans += result.heroVeto.dire.bans[ j ].hero.toLowerCase();
+							direBans += result.heroVeto[ dire ].bans[ j ].hero.toLowerCase();
 						}
 						direBans += '\n';
 					} else {
@@ -209,20 +216,20 @@ $( () => {
 					end += '}}\n';
 					vars.ok = true;
 					vars.teams.push( {
-						radiant: result.teamRadiant,
-						dire: result.teamDire
+						radiant: teamRadiant,
+						dire: teamDire
 					} );
 
-					$radiantTeam.text( result.teamRadiant );
-					$direTeam.text( result.teamDire );
+					$radiantTeam.text( teamRadiant );
+					$direTeam.text( teamDire );
 					$radiantTeam.addClass( 'radiant-side' );
 					$direTeam.addClass( 'dire-side' );
-					if ( result.winner === 'radiant' ) {
+					if ( result.winner === 1 ) {
 						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'radiant' );
+						$matchData.data( 'winningFaction', result.team1.side );
 					} else {
 						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'dire' );
+						$matchData.data( 'winningFaction', result.team2.side );
 					}
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
@@ -491,34 +498,27 @@ $( () => {
 				start += '|matchID=' + vars.matchIDs[ i ] + ' ';
 				if ( data.dota2dbapi.error === undefined ) {
 					const result = data.dota2dbapi;
-
+					let radiant = 'team1';
+					let dire = 'team2';
+					if ( result.team1.side === 'dire' ) {
+						dire = 'team1';
+						radiant = 'team2';
+					}
+					const teamDire = result[ dire ].name;
+					const teamRadiant = result[ radiant ].name;
 					start += '|VOD=';
 					start += '\n';
-					// radiantPicks = "{{MatchSeries/Picks";
-					radiantPicks = result.heroVeto.radiant.picks;
-					// radiantPicks += "}}\n";
-
-					// direPicks = "{{MatchSeries/Picks";
-					direPicks = result.heroVeto.dire.picks;
-					// for ( let j = 1; j <= 5; ++j ) {
-					// direPicks += "}}\n";
-
-					// radiantBans = "{{MatchSeries/Bans";
-					radiantBans = result.heroVeto.radiant.bans;
-					// radiantBans += "}}\n";
-
-					// direBans = "{{MatchSeries/Bans";
-					direBans = result.heroVeto.dire.bans;
-
-					// start += '|radiantKills=' + result.kills.radiant + ' ';
-					// start += '|direKills=' + result.kills.dire + '\n';
-
+					radiantPicks = result.heroVeto[ radiant ].picks;
+					direPicks = result.heroVeto[ dire ].picks;
+					radiantBans = result.heroVeto[ radiant ].bans;
+					direBans = result.heroVeto[ dire ].bans;
 					const factions = { R: 'radiant', D: 'dire' };
 					const factionRosters = { radiant: '', dire: '' };
 					for ( const t in factions ) {
-						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result[ factions[ t ] + 'Score' ] + '}}\n';
+						const getTeam = ( factionKey ) => factionKey === 'R' ? radiant : dire;
+						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result[ getTeam( t ) + 'Score' ] + '}}\n';
 						for ( let j = 0; j < 5; ++j ) {
-							const player = result[ factions[ t ] ].players[ j ];
+							const player = result[ getTeam( t ) ].players[ j ];
 							factionRoster += '{{Match series player|player=';
 							factionRoster += player.name + ' ';
 							factionRoster += '|hero=' + player.heroName + ' ';
@@ -530,7 +530,7 @@ $( () => {
 							factionRoster += '|den=' + player.denies;
 							factionRoster += '|gpm=' + player.goldPerMinute;
 							factionRoster += '|xpm=' + player.xpPerMinute;
-							factionRoster += '|items=' + player.items;
+							factionRoster += '|items=' + player.items.join( ',' );
 							// @TODO LONE DRUID BEAR ITEMS
 							factionRoster += '}}\n';
 						}
@@ -540,23 +540,23 @@ $( () => {
 
 					vars.ok = true;
 					vars.teams.push( {
-						radiant: result.teamRadiant,
-						dire: result.teamDire
+						radiant: teamRadiant,
+						dire: teamDire
 					} );
 
-					$radiantTeam.text( result.teamRadiant );
-					$direTeam.text( result.teamDire );
+					$radiantTeam.text( teamRadiant );
+					$direTeam.text( teamDire );
 					$radiantTeam.addClass( 'radiant-side' );
 					$direTeam.addClass( 'dire-side' );
-					if ( result.winner === 'radiant' ) {
+					if ( result.winner === 1 ) {
 						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'radiant' );
+						$matchData.data( 'winningFaction', result.team1.side );
 					} else {
 						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', 'dire' );
+						$matchData.data( 'winningFaction', result.team2.side );
 					}
-					$matchData.data( 'radiantScore', result.radiantScore );
-					$matchData.data( 'direScore', result.direScore );
+					$matchData.data( 'radiantScore', result[ radiant + 'Score' ] );
+					$matchData.data( 'direScore', result[ dire + 'Score' ] );
 					$matchData.data( 'radiantPicks', radiantPicks );
 					$matchData.data( 'direPicks', direPicks );
 					$matchData.data( 'radiantBans', radiantBans );
