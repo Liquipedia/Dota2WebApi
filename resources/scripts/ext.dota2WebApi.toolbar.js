@@ -530,7 +530,7 @@ $( () => {
 							factionRoster += '|den=' + player.denies;
 							factionRoster += '|gpm=' + player.goldPerMinute;
 							factionRoster += '|xpm=' + player.xpPerMinute;
-							factionRoster += '|items=' + player.items.join( ',' );
+							factionRoster += '|items=' + player.items.map( ( item ) => item.name ).join( ',' );
 							// @TODO LONE DRUID BEAR ITEMS
 							factionRoster += '}}\n';
 						}
