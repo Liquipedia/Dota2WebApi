@@ -145,18 +145,13 @@ $( () => {
 		$status.text( 'In progress...' )
 			.addClass( 'loading' );
 
-		$.ajax( {
-			url: mw.util.wikiScript( 'api' ),
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				action: 'dota2dbapi',
-				matchid: vars.matchIDs[ i ],
-				pagename: mw.config.get( 'wgPageName' ),
-				format: 'json'
-			}
+		const api = new mw.Api();
+		api.post( {
+			action: 'dota2dbapi',
+			matchid: vars.matchIDs[ i ],
+			pagename: mw.config.get( 'wgPageName' )
 		} )
-			.done( ( data ) => {
+			.then( ( data ) => {
 				if ( data.error !== undefined || data.dota2dbapi.error !== undefined ) {
 					$status.text( data.error.info || data.dota2dbapi.error );
 					$status.removeClass( 'loading' );
@@ -245,8 +240,8 @@ $( () => {
 				$status.text( 'Success' );
 				$status.removeClass( 'loading' );
 			} )
-			.fail( ( error ) => {
-				$status.text( error.responseJSON.dota2dbapi.error );
+			.catch( ( type, error ) => {
+				$status.text( error.xhr.responseJSON.dota2dbapi.error );
 			} )
 			.always( () => {
 				++i;
@@ -480,18 +475,13 @@ $( () => {
 		$status.text( 'In progress...' )
 			.addClass( 'loading' );
 
-		$.ajax( {
-			url: mw.util.wikiScript( 'api' ),
-			dataType: 'json',
-			type: 'POST',
-			data: {
-				action: 'dota2dbapi',
-				matchid: vars.matchIDs[ i ],
-				pagename: mw.config.get( 'wgPageName' ),
-				format: 'json'
-			}
+		const api = new mw.Api();
+		api.post( {
+			action: 'dota2dbapi',
+			matchid: vars.matchIDs[ i ],
+			pagename: mw.config.get( 'wgPageName' )
 		} )
-			.done( ( data ) => {
+			.then( ( data ) => {
 				if ( data.error !== undefined || data.dota2dbapi.error !== undefined ) {
 					$status.text( data.error.info || data.dota2dbapi.error );
 					$status.removeClass( 'loading' );
@@ -577,8 +567,8 @@ $( () => {
 
 				$status.removeClass( 'loading' );
 			} )
-			.fail( ( error ) => {
-				$status.text( error.responseJSON.dota2dbapi.error );
+			.catch( ( type, error ) => {
+				$status.text( error.xhr.responseJSON.dota2dbapi.error );
 			} )
 			.always( () => {
 				++i;
