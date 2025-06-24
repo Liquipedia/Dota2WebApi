@@ -157,95 +157,96 @@ $( () => {
 			}
 		} )
 			.done( ( data ) => {
+				if ( data.error !== undefined || data.dota2dbapi.error !== undefined ) {
+					$status.text( data.error.info || data.dota2dbapi.error );
+					$status.removeClass( 'loading' );
+					return;
+				}
+
 				let radiantPicks, direPicks,
 					radiantBans, direBans,
 					end = '';
 
-				if ( data.dota2dbapi.error === undefined ) {
-					const result = data.dota2dbapi;
-					let radiant = 'team1';
-					let dire = 'team2';
-					if ( result.team1.side === 'dire' ) {
-						dire = 'team1';
-						radiant = 'team2';
+				const result = data.dota2dbapi;
+				let radiant = 'team1';
+				let dire = 'team2';
+				if ( result.team1.side === 'dire' ) {
+					dire = 'team1';
+					radiant = 'team2';
+				}
+				const teamDire = result[ dire ].name;
+				const teamRadiant = result[ radiant ].name;
+				if ( Object.keys( result.heroVeto ).length !== 0 ) {
+					radiantPicks = '';
+					for ( let j = 0; j < 5; ++j ) {
+						radiantPicks += `|t{r}h${ j + 1 }=`;
+						radiantPicks += result.heroVeto[ radiant ].picks[ j ].hero.toLowerCase();
 					}
-					const teamDire = result[ dire ].name;
-					const teamRadiant = result[ radiant ].name;
-					if ( Object.keys( result.heroVeto ).length !== 0 ) {
-						radiantPicks = '';
-						for ( let j = 0; j < 5; ++j ) {
-							radiantPicks += `|t{r}h${ j + 1 }=`;
-							// eslint-disable-next-line max-len
-							radiantPicks += result.heroVeto[ radiant ].picks[ j ].hero.toLowerCase();
-						}
-						radiantPicks += '\n';
+					radiantPicks += '\n';
 
-						radiantBans = '';
-						for ( let j = 0; j < 7; ++j ) {
-							radiantBans += `|t{r}b${ j + 1 }=`;
-							radiantBans += result.heroVeto[ radiant ].bans[ j ].hero.toLowerCase();
+					radiantBans = '';
+					for ( let j = 0; j < 7; ++j ) {
+						radiantBans += `|t{r}b${ j + 1 }=`;
+						radiantBans += result.heroVeto[ radiant ].bans[ j ].hero.toLowerCase();
 
-						}
-						radiantBans += '\n';
-
-						direPicks = '';
-						for ( let j = 0; j < 5; ++j ) {
-							direPicks += `|t{d}h${ j + 1 }=`;
-							direPicks += result.heroVeto[ dire ].picks[ j ].hero.toLowerCase();
-						}
-						direPicks += '\n';
-
-						direBans = '';
-						for ( let j = 0; j < 7; ++j ) {
-							direBans += `|t{d}b${ j + 1 }=`;
-							direBans += result.heroVeto[ dire ].bans[ j ].hero.toLowerCase();
-						}
-						direBans += '\n';
-					} else {
-						radiantPicks = '|t{r}h1= |t{r}h2= |t{r}h3= |t{r}h4= |t{r}h5=\n';
-						direPicks = '|t{d}h1= |t{d}h2= |t{d}h3= |t{d}h4= |t{d}h5=\n';
-						radiantBans = '|t{r}b1= |t{r}b2= |t{r}b3= |t{r}b4= |t{r}b5= |t{r}b6= |t{r}b7=\n';
-						direBans = '|t{d}b1= |t{d}b2= |t{d}b3= |t{d}b4= |t{d}b5= |t{d}b6= |t{d}b7=\n';
 					}
+					radiantBans += '\n';
 
-					end += '|length=';
-					end += result.length;
-					end += ' ';
-					end += '|win={w}';
-					end += '\n';
-					end += '}}\n';
-					vars.ok = true;
-					vars.teams.push( {
-						radiant: teamRadiant,
-						dire: teamDire
-					} );
-
-					$radiantTeam.text( teamRadiant );
-					$direTeam.text( teamDire );
-					$radiantTeam.addClass( 'radiant-side' );
-					$direTeam.addClass( 'dire-side' );
-					if ( result.winner === 1 ) {
-						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', result.team1.side );
-					} else {
-						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', result.team2.side );
+					direPicks = '';
+					for ( let j = 0; j < 5; ++j ) {
+						direPicks += `|t{d}h${ j + 1 }=`;
+						direPicks += result.heroVeto[ dire ].picks[ j ].hero.toLowerCase();
 					}
-					$matchData.data( 'radiantPicks', radiantPicks );
-					$matchData.data( 'direPicks', direPicks );
-					$matchData.data( 'radiantBans', radiantBans );
-					$matchData.data( 'direBans', direBans );
-					$matchData.data( 'startTime', result.startTime );
-					$matchData.data( 'wikitextEnd', end );
-					$status.text( 'Success' );
+					direPicks += '\n';
+
+					direBans = '';
+					for ( let j = 0; j < 7; ++j ) {
+						direBans += `|t{d}b${ j + 1 }=`;
+						direBans += result.heroVeto[ dire ].bans[ j ].hero.toLowerCase();
+					}
+					direBans += '\n';
 				} else {
-					$status.text( data.dota2dbapi.error );
+					radiantPicks = '|t{r}h1= |t{r}h2= |t{r}h3= |t{r}h4= |t{r}h5=\n';
+					direPicks = '|t{d}h1= |t{d}h2= |t{d}h3= |t{d}h4= |t{d}h5=\n';
+					radiantBans = '|t{r}b1= |t{r}b2= |t{r}b3= |t{r}b4= |t{r}b5= |t{r}b6= |t{r}b7=\n';
+					direBans = '|t{d}b1= |t{d}b2= |t{d}b3= |t{d}b4= |t{d}b5= |t{d}b6= |t{d}b7=\n';
 				}
 
+				end += '|length=';
+				end += result.length;
+				end += ' ';
+				end += '|win={w}';
+				end += '\n';
+				end += '}}\n';
+				vars.ok = true;
+				vars.teams.push( {
+					radiant: teamRadiant,
+					dire: teamDire
+				} );
+
+				$radiantTeam.text( teamRadiant );
+				$direTeam.text( teamDire );
+				$radiantTeam.addClass( 'radiant-side' );
+				$direTeam.addClass( 'dire-side' );
+				if ( result.winner === 1 ) {
+					$radiantTeam.addClass( 'winning-faction' );
+					$matchData.data( 'winningFaction', result.team1.side );
+				} else {
+					$direTeam.addClass( 'winning-faction' );
+					$matchData.data( 'winningFaction', result.team2.side );
+				}
+				$matchData.data( 'radiantPicks', radiantPicks );
+				$matchData.data( 'direPicks', direPicks );
+				$matchData.data( 'radiantBans', radiantBans );
+				$matchData.data( 'direBans', direBans );
+				$matchData.data( 'startTime', result.startTime );
+				$matchData.data( 'wikitextEnd', end );
+
+				$status.text( 'Success' );
 				$status.removeClass( 'loading' );
 			} )
 			.fail( ( error ) => {
-				$status.text( error );
+				$status.text( error.responseJSON.dota2dbapi.error );
 			} )
 			.always( () => {
 				++i;
@@ -491,91 +492,93 @@ $( () => {
 			}
 		} )
 			.done( ( data ) => {
-				let radiantPicks, direPicks, radiantBans, direBans, end = '',
+				if ( data.error !== undefined || data.dota2dbapi.error !== undefined ) {
+					$status.text( data.error.info || data.dota2dbapi.error );
+					$status.removeClass( 'loading' );
+					return;
+				}
+
+				let end = '',
 					start = '{{Match series stats start\n';
 				const middle = '{{Match series scoreboard header}}\n';
 
 				start += '|matchID=' + vars.matchIDs[ i ] + ' ';
-				if ( data.dota2dbapi.error === undefined ) {
-					const result = data.dota2dbapi;
-					let radiant = 'team1';
-					let dire = 'team2';
-					if ( result.team1.side === 'dire' ) {
-						dire = 'team1';
-						radiant = 'team2';
-					}
-					const teamDire = result[ dire ].name;
-					const teamRadiant = result[ radiant ].name;
-					start += '|VOD=';
-					start += '\n';
-					radiantPicks = result.heroVeto[ radiant ].picks;
-					direPicks = result.heroVeto[ dire ].picks;
-					radiantBans = result.heroVeto[ radiant ].bans;
-					direBans = result.heroVeto[ dire ].bans;
-					const factions = { R: 'radiant', D: 'dire' };
-					const factionRosters = { radiant: '', dire: '' };
-					for ( const t in factions ) {
-						const getTeam = ( factionKey ) => factionKey === 'R' ? radiant : dire;
-						let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result[ getTeam( t ) + 'Score' ] + '}}\n';
-						for ( let j = 0; j < 5; ++j ) {
-							const player = result[ getTeam( t ) ].players[ j ];
-							factionRoster += '{{Match series player|player=';
-							factionRoster += player.name + ' ';
-							factionRoster += '|hero=' + player.heroName + ' ';
-							factionRoster += '|lvl=' + player.level;
-							factionRoster += '|k=' + player.kills;
-							factionRoster += '|d=' + player.deaths;
-							factionRoster += '|a=' + player.assists;
-							factionRoster += '|lh=' + player.lastHits;
-							factionRoster += '|den=' + player.denies;
-							factionRoster += '|gpm=' + player.goldPerMinute;
-							factionRoster += '|xpm=' + player.xpPerMinute;
-							factionRoster += '|items=' + player.items.map( ( item ) => item.name ).join( ',' );
-							// @TODO LONE DRUID BEAR ITEMS
-							factionRoster += '}}\n';
-						}
-						factionRosters[ factions[ t ] ] = factionRoster;
-					}
-					end += '{{Match series stats end}}\n';
-
-					vars.ok = true;
-					vars.teams.push( {
-						radiant: teamRadiant,
-						dire: teamDire
-					} );
-
-					$radiantTeam.text( teamRadiant );
-					$direTeam.text( teamDire );
-					$radiantTeam.addClass( 'radiant-side' );
-					$direTeam.addClass( 'dire-side' );
-					if ( result.winner === 1 ) {
-						$radiantTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', result.team1.side );
-					} else {
-						$direTeam.addClass( 'winning-faction' );
-						$matchData.data( 'winningFaction', result.team2.side );
-					}
-					$matchData.data( 'radiantScore', result[ radiant + 'Score' ] );
-					$matchData.data( 'direScore', result[ dire + 'Score' ] );
-					$matchData.data( 'radiantPicks', radiantPicks );
-					$matchData.data( 'direPicks', direPicks );
-					$matchData.data( 'radiantBans', radiantBans );
-					$matchData.data( 'direBans', direBans );
-					$matchData.data( 'radiantRoster', factionRosters.radiant );
-					$matchData.data( 'direRoster', factionRosters.dire );
-					$matchData.data( 'startTime', result.startTime );
-					$matchData.data( 'wikitextStart', start );
-					$matchData.data( 'wikitextMiddle', middle );
-					$matchData.data( 'wikitextEnd', end );
-					$status.text( 'Success' );
-				} else {
-					$status.text( data.dota2dbapi.error );
+				const result = data.dota2dbapi;
+				let radiant = 'team1';
+				let dire = 'team2';
+				if ( result.team1.side === 'dire' ) {
+					dire = 'team1';
+					radiant = 'team2';
 				}
+				const teamDire = result[ dire ].name;
+				const teamRadiant = result[ radiant ].name;
+				start += '|VOD=';
+				start += '\n';
+				const radiantPicks = result.heroVeto[ radiant ].picks,
+					direPicks = result.heroVeto[ dire ].picks,
+					radiantBans = result.heroVeto[ radiant ].bans,
+					direBans = result.heroVeto[ dire ].bans;
+				const factions = { R: 'radiant', D: 'dire' };
+				const factionRosters = { radiant: '', dire: '' };
+				for ( const t in factions ) {
+					const getTeam = ( factionKey ) => factionKey === 'R' ? radiant : dire;
+					let factionRoster = '{{Match series faction|faction=' + factions[ t ] + '|kills=' + result[ getTeam( t ) + 'Score' ] + '}}\n';
+					for ( let j = 0; j < 5; ++j ) {
+						const player = result[ getTeam( t ) ].players[ j ];
+						factionRoster += '{{Match series player|player=';
+						factionRoster += player.name + ' ';
+						factionRoster += '|hero=' + player.heroName + ' ';
+						factionRoster += '|lvl=' + player.level;
+						factionRoster += '|k=' + player.kills;
+						factionRoster += '|d=' + player.deaths;
+						factionRoster += '|a=' + player.assists;
+						factionRoster += '|lh=' + player.lastHits;
+						factionRoster += '|den=' + player.denies;
+						factionRoster += '|gpm=' + player.goldPerMinute;
+						factionRoster += '|xpm=' + player.xpPerMinute;
+						factionRoster += '|items=' + player.items.map( ( item ) => item.name ).join( ',' );
+						// @TODO LONE DRUID BEAR ITEMS
+						factionRoster += '}}\n';
+					}
+					factionRosters[ factions[ t ] ] = factionRoster;
+				}
+				end += '{{Match series stats end}}\n';
+
+				vars.ok = true;
+				vars.teams.push( {
+					radiant: teamRadiant,
+					dire: teamDire
+				} );
+
+				$radiantTeam.text( teamRadiant );
+				$direTeam.text( teamDire );
+				$radiantTeam.addClass( 'radiant-side' );
+				$direTeam.addClass( 'dire-side' );
+				if ( result.winner === 1 ) {
+					$radiantTeam.addClass( 'winning-faction' );
+					$matchData.data( 'winningFaction', result.team1.side );
+				} else {
+					$direTeam.addClass( 'winning-faction' );
+					$matchData.data( 'winningFaction', result.team2.side );
+				}
+				$matchData.data( 'radiantScore', result[ radiant + 'Score' ] );
+				$matchData.data( 'direScore', result[ dire + 'Score' ] );
+				$matchData.data( 'radiantPicks', radiantPicks );
+				$matchData.data( 'direPicks', direPicks );
+				$matchData.data( 'radiantBans', radiantBans );
+				$matchData.data( 'direBans', direBans );
+				$matchData.data( 'radiantRoster', factionRosters.radiant );
+				$matchData.data( 'direRoster', factionRosters.dire );
+				$matchData.data( 'startTime', result.startTime );
+				$matchData.data( 'wikitextStart', start );
+				$matchData.data( 'wikitextMiddle', middle );
+				$matchData.data( 'wikitextEnd', end );
+				$status.text( 'Success' );
 
 				$status.removeClass( 'loading' );
 			} )
 			.fail( ( error ) => {
-				$status.text( error );
+				$status.text( error.responseJSON.dota2dbapi.error );
 			} )
 			.always( () => {
 				++i;
