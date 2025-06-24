@@ -786,7 +786,7 @@ $( () => {
 	 * Check if view is in edit mode and that the required
 	 * modules are available. Then, customize the toolbar...
 	 */
-	if ( [ 'edit', 'submit' ].indexOf( mw.config.get( 'wgAction' ) ) !== -1 ) {
+	if ( [ 'edit', 'submit' ].includes( mw.config.get( 'wgAction' ) ) ) {
 		mw.loader.using( 'user.options', () => {
 			if ( mw.user.options.get( 'usebetatoolbar' ) ) {
 				mw.loader.using( 'ext.wikiEditor', () => {
